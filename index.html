@@ -188,8 +188,8 @@
         <div class="btn-row">
           <div id="headerSession" class="user-chip" style="display:none;"><div id="headerAvatar" class="avatar-shell" style="width:28px; height:28px; font-size:12px;">A</div><strong id="headerUserName">-</strong><span id="headerUserEmail" class="muted">-</span></div>
           <button class="btn" id="themeToggle">Tema</button>
-          <button class="btn">Sahte Veri Yenile</button>
-          <button class="btn primary">Yeni İstek</button>
+          <button class="btn" id="refreshMockBtn">Veri Yenile</button>
+          <button class="btn primary" id="newRequestBtn">Natal Chart</button>
           <button class="btn" id="headerLogoutBtn" style="display:none;">Logout</button>
         </div>
       </header>
@@ -409,14 +409,17 @@
             <div class="card-inner">
               <div class="section-head"><h3>Sinastri girişleri</h3><span class="muted">İki kişi</span></div>
               <div class="form-grid">
-                <label>Kişi A<input value="Kişi A" /></label>
-                <label>Kişi B<input value="Kişi B" /></label>
-                <label>A tarihi<input type="date" value="1990-02-16" /></label>
-                <label>B tarihi<input type="date" value="1993-10-07" /></label>
-                <label>A saati<input type="time" value="09:10" /></label>
-                <label>B saati<input type="time" value="20:45" /></label>
+                <label>Kişi A<input id="synNameA" value="Kişi A" /></label>
+                <label>Kişi B<input id="synNameB" value="Kişi B" /></label>
+                <label>A tarihi<input id="synDateA" type="date" value="1990-02-16" /></label>
+                <label>B tarihi<input id="synDateB" type="date" value="1993-10-07" /></label>
+                <label>A saati<input id="synTimeA" type="time" value="09:10" /></label>
+                <label>B saati<input id="synTimeB" type="time" value="20:45" /></label>
+                <label>A timezone<select id="synTzA"><option value="UTC">UTC</option><option value="Europe/Istanbul" selected>Europe/Istanbul</option><option value="Europe/London">Europe/London</option><option value="America/New_York">America/New_York</option><option value="Asia/Tokyo">Asia/Tokyo</option></select></label>
+                <label>B timezone<select id="synTzB"><option value="UTC">UTC</option><option value="Europe/Istanbul" selected>Europe/Istanbul</option><option value="Europe/London">Europe/London</option><option value="America/New_York">America/New_York</option><option value="Asia/Tokyo">Asia/Tokyo</option></select></label>
               </div>
-              <div class="btn-row" style="margin-top:16px;"><button class="btn primary">Sinastri Oluştur</button><button class="btn">Composite'e Git</button></div>
+              <div class="btn-row" style="margin-top:16px;"><button class="btn primary" id="synCalcBtn">Sinastri Hesapla</button><button class="btn">Composite'e Git</button></div>
+              <div id="synMessage" style="margin-top:12px;"></div>
             </div>
           </article>
           <article class="card">
@@ -440,11 +443,8 @@
           <article class="card">
             <div class="card-inner">
               <div class="section-head"><h3>Açı matrisi</h3><span class="muted">Örnek</span></div>
-              <div class="matrix">
-                <div>Sun △ Moon<br><span class="muted">2°11′</span></div>
-                <div>Venus ☌ Mars<br><span class="muted">1°24′</span></div>
-                <div>Moon □ Saturn<br><span class="muted">3°09′</span></div>
-                <div>Mercury ✶ ASC<br><span class="muted">0°58′</span></div>
+              <div id="synAspectMatrix" class="matrix">
+                <div class="muted" style="grid-column:1/-1; font-size:var(--text-xs);">Hesaplamak için yukarıdaki formu doldurun ve "Sinastri Hesapla" butonuna basın.</div>
               </div>
             </div>
           </article>
@@ -582,6 +582,108 @@
                 <div class="result-box"><span>Rol</span><strong id="summaryPurpose">-</strong></div>
                 <div class="result-box"><span>Durum</span><strong id="summaryStatus">-</strong></div>
               </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section id="login" class="screen">
+        <div class="grid-2">
+          <article class="card">
+            <div class="card-inner">
+              <div class="section-head"><h3>Giriş yap</h3><span class="muted">Mevcut hesap</span></div>
+              <form id="loginForm" novalidate>
+                <div class="form-grid">
+                  <label>E-posta
+                    <input id="loginEmail" name="email" type="email" autocomplete="email" required />
+                  </label>
+                  <label>Şifre
+                    <input id="loginPassword" name="password" type="password" autocomplete="current-password" required />
+                  </label>
+                </div>
+                <div class="btn-row" style="margin-top:16px;">
+                  <button class="btn primary" type="submit">Giriş yap</button>
+                  <button class="btn" type="button" id="toggleLoginPasswordBtn">Şifreyi göster</button>
+                </div>
+              </form>
+              <div id="loginMessage" style="margin-top:16px;"></div>
+            </div>
+          </article>
+          <article class="card">
+            <div class="card-inner">
+              <div class="section-head"><h3>Oturum durumu</h3><span class="muted">Aktif oturum</span></div>
+              <div id="sessionSummary" class="result-grid" style="display:none;">
+                <div class="result-box"><span>Kullanıcı</span><strong id="sessionName">-</strong></div>
+                <div class="result-box"><span>E-posta</span><strong id="sessionEmail">-</strong></div>
+                <div class="result-box"><span>Durum</span><strong id="sessionState">-</strong></div>
+                <div class="result-box"><span>Giriş zamanı</span><strong id="sessionTime">-</strong></div>
+              </div>
+              <div class="btn-row" style="margin-top:16px;">
+                <button class="btn" id="logoutBtn" style="display:none;">Çıkış yap</button>
+              </div>
+              <div class="list" style="margin-top:16px;">
+                <div class="item"><strong>Yerel oturum</strong><span class="muted">Bu prototype sürümünde oturum bilgisi localStorage'da tutulur. Backend entegrasyonunda JWT tabanlı kimlik doğrulama kullanılacaktır.</span></div>
+                <div class="item"><strong>Henüz kayıt yok?</strong><span class="muted">Sol menüden "Kullanıcı Kaydı" ekranına geçerek hesap oluşturabilirsin.</span></div>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section id="profile" class="screen">
+        <div class="grid-2">
+          <article class="card">
+            <div class="card-inner">
+              <div class="section-head"><h3>Profil bilgileri</h3><span class="muted">Mevcut kayıt</span></div>
+              <div style="display:flex; align-items:center; gap:var(--space-4); margin-bottom:var(--space-5);">
+                <div id="profileAvatar" class="avatar-shell">A</div>
+                <div>
+                  <strong id="profileName" style="font-size:var(--text-lg); display:block;">-</strong>
+                  <div id="profileEmail" class="muted" style="margin-top:4px; font-size:var(--text-sm);">-</div>
+                  <div id="profilePurpose" class="helper" style="margin-top:4px;">-</div>
+                </div>
+              </div>
+              <div class="result-grid">
+                <div class="result-box"><span>Oturum</span><strong id="profileStatus">-</strong></div>
+                <div class="result-box"><span>Seviye</span><strong id="profileLevelDisplay">Başlangıç</strong></div>
+              </div>
+              <div style="margin-top:var(--space-4);">
+                <label style="margin-bottom:8px;">Avatar yükle
+                  <input id="profileAvatarInput" type="file" accept="image/*" style="min-height:auto; padding:8px 12px;" />
+                </label>
+                <button class="btn" id="removeAvatarBtn" style="margin-top:8px; width:100%;">Avatar kaldır</button>
+              </div>
+              <div id="profileMessage" style="margin-top:16px;"></div>
+            </div>
+          </article>
+          <article class="card">
+            <div class="card-inner">
+              <div class="section-head"><h3>Profili düzenle</h3><span class="muted">Güncelle</span></div>
+              <form id="profileForm" novalidate>
+                <div class="form-grid">
+                  <label>Ad soyad<input id="profileEditName" name="name" autocomplete="name" /></label>
+                  <label>E-posta<input id="profileEditEmail" name="email" type="email" autocomplete="email" /></label>
+                  <label>Kullanım amacı
+                    <select id="profileEditPurpose">
+                      <option>Kişisel kullanım</option>
+                      <option>Danışmanlık</option>
+                      <option>İçerik üretimi</option>
+                      <option>Araştırma</option>
+                    </select>
+                  </label>
+                  <label>Seviye
+                    <select id="profileEditLevel">
+                      <option>Başlangıç</option>
+                      <option>Orta</option>
+                      <option>İleri</option>
+                      <option>Uzman</option>
+                    </select>
+                  </label>
+                </div>
+                <div class="btn-row" style="margin-top:16px;">
+                  <button class="btn primary" type="submit">Profili kaydet</button>
+                </div>
+              </form>
             </div>
           </article>
         </div>
@@ -985,36 +1087,41 @@ const root = document.documentElement;
     const renderProfile = () => {
       const storedUser = JSON.parse(localStorage.getItem('asteria-user') || 'null');
       const session = JSON.parse(localStorage.getItem('asteria-session') || 'null');
-      document.getElementById('profileName').textContent = storedUser?.name || 'Misafir Kullanıcı';
-      document.getElementById('profileEmail').textContent = storedUser?.email || 'Giriş yapılmadı';
-      document.getElementById('profilePurpose').textContent = storedUser?.purpose || 'Henüz belirtilmedi';
-      document.getElementById('profileStatus').textContent = session ? 'Aktif oturum' : 'Pasif';
-      document.getElementById('profileEditName').value = storedUser?.name || '';
-      document.getElementById('profileEditEmail').value = storedUser?.email || '';
-      document.getElementById('profileEditPurpose').value = storedUser?.purpose || 'Kişisel kullanım';
-      document.getElementById('profileEditLevel').value = storedUser?.level || 'Başlangıç';
+      setEl('profileName', 'textContent', storedUser?.name || 'Misafir Kullanıcı');
+      setEl('profileEmail', 'textContent', storedUser?.email || 'Giriş yapılmadı');
+      setEl('profilePurpose', 'textContent', storedUser?.purpose || 'Henüz belirtilmedi');
+      setEl('profileStatus', 'textContent', session ? 'Aktif oturum' : 'Pasif');
+      setEl('profileLevelDisplay', 'textContent', storedUser?.level || 'Başlangıç');
+      setEl('profileEditName', 'value', storedUser?.name || '');
+      setEl('profileEditEmail', 'value', storedUser?.email || '');
+      const purposeSel = document.getElementById('profileEditPurpose');
+      if (purposeSel) purposeSel.value = storedUser?.purpose || 'Kişisel kullanım';
+      const levelSel = document.getElementById('profileEditLevel');
+      if (levelSel) levelSel.value = storedUser?.level || 'Başlangıç';
       renderAvatar(storedUser);
     };
 
+    const setEl = (id, prop, val) => { const el = document.getElementById(id); if (el) el[prop] = val; };
+    const showEl = (id, disp) => { const el = document.getElementById(id); if (el) el.style.display = disp; };
+
     const renderSession = session => {
-      const summary = document.getElementById('sessionSummary');
-      const headerSession = document.getElementById('headerSession');
-      const headerLogout = document.getElementById('headerLogoutBtn');
       if (!session) {
-        summary.style.display = 'none';
-        headerSession.style.display = 'none';
-        headerLogout.style.display = 'none';
+        showEl('sessionSummary', 'none');
+        showEl('logoutBtn', 'none');
+        showEl('headerSession', 'none');
+        showEl('headerLogoutBtn', 'none');
         return;
       }
-      document.getElementById('sessionName').textContent = session.name;
-      document.getElementById('sessionEmail').textContent = session.email;
-      document.getElementById('sessionState').textContent = 'Giriş yapıldı';
-      document.getElementById('sessionTime').textContent = new Date(session.loggedInAt).toLocaleString('tr-TR');
-      document.getElementById('headerUserName').textContent = session.name;
-      document.getElementById('headerUserEmail').textContent = session.email;
-      summary.style.display = 'grid';
-      headerSession.style.display = 'inline-flex';
-      headerLogout.style.display = 'inline-flex';
+      setEl('sessionName', 'textContent', session.name);
+      setEl('sessionEmail', 'textContent', session.email);
+      setEl('sessionState', 'textContent', 'Giriş yapıldı');
+      setEl('sessionTime', 'textContent', new Date(session.loggedInAt).toLocaleString('tr-TR'));
+      setEl('headerUserName', 'textContent', session.name);
+      setEl('headerUserEmail', 'textContent', session.email);
+      showEl('sessionSummary', 'grid');
+      showEl('logoutBtn', 'inline-flex');
+      showEl('headerSession', 'inline-flex');
+      showEl('headerLogoutBtn', 'inline-flex');
     };
 
     registerForm?.addEventListener('submit', event => {
@@ -1156,13 +1263,97 @@ const root = document.documentElement;
       message.innerHTML = `<div class=\"success\"><strong>Profil güncellendi.</strong><div class=\"helper\" style=\"margin-top:6px;\">Yerel kullanıcı kaydı ve oturum görünümü yenilendi.</div></div>`;
     });
 
+    const ASPECTS = [
+      { sym: '☌', label: 'Conjunction', angle: 0, orb: 8 },
+      { sym: '☍', label: 'Opposition', angle: 180, orb: 8 },
+      { sym: '△', label: 'Trine', angle: 120, orb: 7 },
+      { sym: '□', label: 'Square', angle: 90, orb: 7 },
+      { sym: '✶', label: 'Sextile', angle: 60, orb: 6 },
+    ];
+
+    const findAspect = (lonA, lonB) => {
+      let diff = Math.abs(lonA - lonB) % 360;
+      if (diff > 180) diff = 360 - diff;
+      for (const asp of ASPECTS) {
+        const orb = Math.abs(diff - asp.angle);
+        if (orb <= asp.orb) return { ...asp, exactOrb: orb };
+      }
+      return null;
+    };
+
+    const formatOrb = v => {
+      const deg = Math.floor(v);
+      const min = Math.round((v - deg) * 60);
+      return `${deg}°${min.toString().padStart(2,'0')}′`;
+    };
+
+    const getSynastryPayload = side => ({
+      name: document.getElementById(`synName${side}`).value.trim() || `Kişi ${side}`,
+      date: document.getElementById(`synDate${side}`).value,
+      time: document.getElementById(`synTime${side}`).value,
+      timezone: document.getElementById(`synTz${side}`).value,
+      lat: 41.0082, lon: 28.9784,
+    });
+
+    document.getElementById('synCalcBtn')?.addEventListener('click', () => {
+      const msg = document.getElementById('synMessage');
+      const pA = getSynastryPayload('A');
+      const pB = getSynastryPayload('B');
+      if (!pA.date || !pB.date) {
+        msg.innerHTML = '<div class="alert"><strong>Hata:</strong> Her iki kişinin doğum tarihi zorunlu.</div>';
+        return;
+      }
+      msg.innerHTML = '';
+      try {
+        const rowsA = computeEphemeris(pA, pA.lat, pA.lon);
+        const rowsB = computeEphemeris(pB, pB.lat, pB.lon);
+        const mainBodies = ['Sun', 'Moon', 'Mercury', 'Venus', 'Mars', 'Jupiter', 'Saturn'];
+        const found = [];
+        for (const rA of rowsA.filter(r => mainBodies.includes(r.body))) {
+          for (const rB of rowsB.filter(r => mainBodies.includes(r.body))) {
+            const asp = findAspect(rA.rawLon, rB.rawLon);
+            if (asp) found.push({ bodyA: rA.body, bodyB: rB.body, asp });
+          }
+        }
+        found.sort((a, b) => a.asp.exactOrb - b.asp.exactOrb);
+        const matrix = document.getElementById('synAspectMatrix');
+        if (found.length === 0) {
+          matrix.innerHTML = '<div class="muted" style="grid-column:1/-1;">Seçilen orb toleransında anlamlı açı bulunamadı.</div>';
+        } else {
+          matrix.innerHTML = found.slice(0, 12).map(({ bodyA, bodyB, asp }) =>
+            `<div>${bodyA} ${asp.sym} ${bodyB}<br><span class="muted">${formatOrb(asp.exactOrb)} · ${asp.label}</span></div>`
+          ).join('');
+        }
+        msg.innerHTML = `<div class="success"><strong>${found.length} açı bulundu.</strong><div class="helper" style="margin-top:6px;">${pA.name} ile ${pB.name} arasındaki sinastri açıları hesaplandı. En güçlü ${Math.min(found.length,12)} açı gösteriliyor.</div></div>`;
+      } catch (e) {
+        msg.innerHTML = `<div class="alert"><strong>Hesaplama hatası:</strong> ${e.message}</div>`;
+      }
+    });
+
+    document.getElementById('refreshMockBtn')?.addEventListener('click', () => {
+      if (processBirthBtn) {
+        const payload = getBirthPayload();
+        const error = validateBirthPayload(payload);
+        if (!error) renderBirthResult(payload);
+      }
+      navButtons.forEach(x => x.classList.remove('active'));
+      const natalBtn = navButtons.find(b => b.dataset.screenTarget === 'natal');
+      if (natalBtn) { natalBtn.classList.add('active'); screens.forEach(s => s.classList.toggle('active', s.id === 'natal')); screenTitle.textContent = 'Natal Chart'; }
+    });
+
+    document.getElementById('newRequestBtn')?.addEventListener('click', () => {
+      navButtons.forEach(x => x.classList.remove('active'));
+      const natalBtn = navButtons.find(b => b.dataset.screenTarget === 'natal');
+      if (natalBtn) { natalBtn.classList.add('active'); screens.forEach(s => s.classList.toggle('active', s.id === 'natal')); screenTitle.textContent = 'Natal Chart'; }
+    });
+
     renderDailyHoroscopes();
     renderWeeklyHoroscopes();
     renderMonthlyHoroscopes();
 
     const existingSession = JSON.parse(localStorage.getItem('asteria-session') || 'null');
-    renderSession(existingSession);
-    renderProfile();
+    try { renderSession(existingSession); } catch(e) {}
+    try { renderProfile(); } catch(e) {}
 
     togglePasswordBtn?.addEventListener('click', () => {
       const input = document.getElementById('regPassword');
