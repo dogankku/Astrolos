@@ -132,6 +132,14 @@
     .result-box { padding: 14px; border-radius: var(--radius-md); background: var(--color-surface-2); border: 1px solid var(--color-border); }
     .result-box span { display:block; color: var(--color-muted); font-size: var(--text-xs); margin-bottom: 6px; }
     .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; word-break: break-all; }
+    .city-wrap { position: relative; }
+    .city-dropdown { position: absolute; z-index: 200; top: calc(100% + 4px); left: 0; right: 0; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-md); max-height: 260px; overflow-y: auto; box-shadow: var(--shadow-md); display: none; }
+    .city-option { padding: 10px 12px; cursor: pointer; font-size: var(--text-sm); border-bottom: 1px solid var(--color-border); line-height: 1.4; }
+    .city-option:last-child { border-bottom: none; }
+    .city-option:hover, .city-option.focused { background: var(--color-surface-2); }
+    .city-option .city-name { display: block; color: var(--color-text); }
+    .city-option .city-detail { display: block; color: var(--color-muted); font-size: var(--text-xs); margin-top: 2px; }
+    .city-searching { padding: 10px 12px; font-size: var(--text-xs); color: var(--color-muted); }
     @media (max-width: 1100px) {
       .grid-2, .grid-3, .metric-grid { grid-template-columns: 1fr; }
     }
@@ -286,19 +294,10 @@
                 <label>Doğum tarihi<input id="birthDate" type="date" value="1992-08-14" required /></label>
                 <label>Doğum saati<input id="birthTime" type="time" value="13:24" required /></label>
                 <label>Şehir
-                  <input id="birthCity" value="Istanbul" placeholder="Şehir yaz" list="cityList" autocomplete="off" required />
-                  <datalist id="cityList">
-                    <option value="Istanbul"><option value="Ankara"><option value="Izmir">
-                    <option value="Bursa"><option value="Antalya"><option value="London">
-                    <option value="New York"><option value="Paris"><option value="Berlin">
-                    <option value="Tokyo"><option value="Moscow"><option value="Cairo">
-                    <option value="Mumbai"><option value="Sydney"><option value="Los Angeles">
-                    <option value="Chicago"><option value="Toronto"><option value="Dubai">
-                    <option value="Singapore"><option value="Athens"><option value="Rome">
-                    <option value="Madrid"><option value="Amsterdam"><option value="Vienna">
-                    <option value="Warsaw"><option value="Tehran"><option value="Riyadh">
-                    <option value="Buenos Aires"><option value="Sao Paulo"><option value="Mexico City">
-                  </datalist>
+                  <div class="city-wrap">
+                    <input id="birthCity" value="Istanbul" placeholder="Şehir ara..." autocomplete="off" required />
+                    <div id="cityDropdown" class="city-dropdown"></div>
+                  </div>
                 </label>
                 <label>Saat dilimi<select id="birthTimezone">
                   <option value="Europe/Istanbul">Europe/Istanbul (UTC+3)</option>
@@ -1040,14 +1039,96 @@ const root = document.documentElement;
       renderEphemeris(payload, payload.lat, payload.lon);
     };
 
-    document.getElementById('birthCity')?.addEventListener('input', () => {
-      const city = document.getElementById('birthCity').value.trim();
-      const coords = CITY_COORDS[city];
-      if (coords) {
-        document.getElementById('birthLat').value = coords.lat;
-        document.getElementById('birthLon').value = coords.lon;
-      }
-    });
+    (() => {
+      const cityInput = document.getElementById('birthCity');
+      const dropdown = document.getElementById('cityDropdown');
+      if (!cityInput || !dropdown) return;
+
+      let searchTimer = null;
+      let focusedIdx = -1;
+
+      const closeDropdown = () => { dropdown.style.display = 'none'; focusedIdx = -1; };
+
+      const selectCity = (name, lat, lon, country) => {
+        cityInput.value = name;
+        document.getElementById('birthLat').value = parseFloat(lat).toFixed(4);
+        document.getElementById('birthLon').value = parseFloat(lon).toFixed(4);
+        closeDropdown();
+      };
+
+      const renderResults = results => {
+        if (!results.length) { closeDropdown(); return; }
+        focusedIdx = -1;
+        dropdown.innerHTML = results.map((r, i) => {
+          const parts = r.display_name.split(', ');
+          const name = parts[0];
+          const detail = parts.slice(1, 3).join(', ');
+          return `<div class="city-option" data-idx="${i}" data-lat="${r.lat}" data-lon="${r.lon}" data-name="${name}">
+            <span class="city-name">${name}</span>
+            <span class="city-detail">${detail}</span>
+          </div>`;
+        }).join('');
+        dropdown.querySelectorAll('.city-option').forEach(opt => {
+          opt.addEventListener('mousedown', e => {
+            e.preventDefault();
+            selectCity(opt.dataset.name, opt.dataset.lat, opt.dataset.lon);
+          });
+        });
+        dropdown.style.display = 'block';
+      };
+
+      cityInput.addEventListener('input', () => {
+        const q = cityInput.value.trim();
+        clearTimeout(searchTimer);
+        if (q.length < 2) { closeDropdown(); return; }
+
+        // Instant match from local cache
+        const local = Object.keys(CITY_COORDS).filter(c => c.toLowerCase().startsWith(q.toLowerCase())).slice(0, 3);
+        if (local.length) {
+          renderResults(local.map(c => ({
+            display_name: c,
+            lat: CITY_COORDS[c].lat,
+            lon: CITY_COORDS[c].lon
+          })));
+        } else {
+          dropdown.innerHTML = '<div class="city-searching">Aranıyor…</div>';
+          dropdown.style.display = 'block';
+        }
+
+        searchTimer = setTimeout(async () => {
+          try {
+            const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(q)}&format=json&limit=7&addressdetails=0&accept-language=tr,en`;
+            const res = await fetch(url, { headers: { 'User-Agent': 'Asteria-Core/1.0' } });
+            const data = await res.json();
+            renderResults(data);
+          } catch (e) {
+            if (!local.length) closeDropdown();
+          }
+        }, 380);
+      });
+
+      cityInput.addEventListener('keydown', e => {
+        const opts = [...dropdown.querySelectorAll('.city-option')];
+        if (!opts.length) return;
+        if (e.key === 'ArrowDown') {
+          e.preventDefault();
+          focusedIdx = Math.min(focusedIdx + 1, opts.length - 1);
+          opts.forEach((o, i) => o.classList.toggle('focused', i === focusedIdx));
+        } else if (e.key === 'ArrowUp') {
+          e.preventDefault();
+          focusedIdx = Math.max(focusedIdx - 1, 0);
+          opts.forEach((o, i) => o.classList.toggle('focused', i === focusedIdx));
+        } else if (e.key === 'Enter' && focusedIdx >= 0) {
+          e.preventDefault();
+          const opt = opts[focusedIdx];
+          selectCity(opt.dataset.name, opt.dataset.lat, opt.dataset.lon);
+        } else if (e.key === 'Escape') {
+          closeDropdown();
+        }
+      });
+
+      cityInput.addEventListener('blur', () => setTimeout(closeDropdown, 150));
+    })();
 
     processBirthBtn?.addEventListener('click', () => {
       const payload = getBirthPayload();
