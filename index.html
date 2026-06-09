@@ -7,6 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/astronomy-engine@2.1.19/astronomy.js"></script>
   <style>
 :root, [data-theme="light"] {
       --text-xs: 12px;
@@ -179,8 +180,8 @@
       <header class="topbar">
         <div>
           <div class="status-row">
-            <span class="status-pill">● Sprint 1 / UI Prototype</span>
-            <span class="status-pill">HTML + CSS + JS</span>
+            <span class="status-pill">● Sprint 2 / Gerçek Efemeris</span>
+            <span class="status-pill">Astronomy Engine · HTML + JS</span>
           </div>
           <h2 id="screenTitle">Dashboard</h2>
         </div>
@@ -284,10 +285,59 @@
                 <label>Zodyak<select id="birthZodiac"><option>Tropical</option><option>Sidereal</option></select></label>
                 <label>Doğum tarihi<input id="birthDate" type="date" value="1992-08-14" required /></label>
                 <label>Doğum saati<input id="birthTime" type="time" value="13:24" required /></label>
-                <label>Şehir<input id="birthCity" value="Istanbul" placeholder="Şehir yaz" required /></label>
-                <label>Saat dilimi<select id="birthTimezone"><option value="Europe/Istanbul">Europe/Istanbul</option><option value="UTC">UTC</option><option value="Europe/London">Europe/London</option><option value="America/New_York">America/New_York</option></select></label>
+                <label>Şehir
+                  <input id="birthCity" value="Istanbul" placeholder="Şehir yaz" list="cityList" autocomplete="off" required />
+                  <datalist id="cityList">
+                    <option value="Istanbul"><option value="Ankara"><option value="Izmir">
+                    <option value="Bursa"><option value="Antalya"><option value="London">
+                    <option value="New York"><option value="Paris"><option value="Berlin">
+                    <option value="Tokyo"><option value="Moscow"><option value="Cairo">
+                    <option value="Mumbai"><option value="Sydney"><option value="Los Angeles">
+                    <option value="Chicago"><option value="Toronto"><option value="Dubai">
+                    <option value="Singapore"><option value="Athens"><option value="Rome">
+                    <option value="Madrid"><option value="Amsterdam"><option value="Vienna">
+                    <option value="Warsaw"><option value="Tehran"><option value="Riyadh">
+                    <option value="Buenos Aires"><option value="Sao Paulo"><option value="Mexico City">
+                  </datalist>
+                </label>
+                <label>Saat dilimi<select id="birthTimezone">
+                  <option value="Europe/Istanbul">Europe/Istanbul (UTC+3)</option>
+                  <option value="UTC">UTC (UTC+0)</option>
+                  <option value="Europe/London">Europe/London (UTC±0/+1)</option>
+                  <option value="America/New_York">America/New_York (UTC-5/-4)</option>
+                  <option value="America/Los_Angeles">America/Los_Angeles (UTC-8/-7)</option>
+                  <option value="America/Chicago">America/Chicago (UTC-6/-5)</option>
+                  <option value="America/Toronto">America/Toronto (UTC-5/-4)</option>
+                  <option value="America/Sao_Paulo">America/Sao_Paulo (UTC-3)</option>
+                  <option value="America/Argentina/Buenos_Aires">America/Buenos_Aires (UTC-3)</option>
+                  <option value="America/Mexico_City">America/Mexico_City (UTC-6/-5)</option>
+                  <option value="Europe/Berlin">Europe/Berlin (UTC+1/+2)</option>
+                  <option value="Europe/Paris">Europe/Paris (UTC+1/+2)</option>
+                  <option value="Europe/Moscow">Europe/Moscow (UTC+3)</option>
+                  <option value="Europe/Athens">Europe/Athens (UTC+2/+3)</option>
+                  <option value="Europe/Rome">Europe/Rome (UTC+1/+2)</option>
+                  <option value="Europe/Madrid">Europe/Madrid (UTC+1/+2)</option>
+                  <option value="Europe/Amsterdam">Europe/Amsterdam (UTC+1/+2)</option>
+                  <option value="Europe/Warsaw">Europe/Warsaw (UTC+1/+2)</option>
+                  <option value="Europe/Stockholm">Europe/Stockholm (UTC+1/+2)</option>
+                  <option value="Asia/Tokyo">Asia/Tokyo (UTC+9)</option>
+                  <option value="Asia/Shanghai">Asia/Shanghai (UTC+8)</option>
+                  <option value="Asia/Seoul">Asia/Seoul (UTC+9)</option>
+                  <option value="Asia/Dubai">Asia/Dubai (UTC+4)</option>
+                  <option value="Asia/Singapore">Asia/Singapore (UTC+8)</option>
+                  <option value="Asia/Bangkok">Asia/Bangkok (UTC+7)</option>
+                  <option value="Asia/Tehran">Asia/Tehran (UTC+3:30/+4:30)</option>
+                  <option value="Asia/Kolkata">Asia/Kolkata (UTC+5:30)</option>
+                  <option value="Asia/Karachi">Asia/Karachi (UTC+5)</option>
+                  <option value="Africa/Cairo">Africa/Cairo (UTC+2)</option>
+                  <option value="Africa/Nairobi">Africa/Nairobi (UTC+3)</option>
+                  <option value="Africa/Johannesburg">Africa/Johannesburg (UTC+2)</option>
+                  <option value="Australia/Sydney">Australia/Sydney (UTC+10/+11)</option>
+                </select></label>
+                <label>Enlem<input id="birthLat" type="number" step="0.0001" value="41.0082" min="-90" max="90" required /></label>
+                <label>Boylam<input id="birthLon" type="number" step="0.0001" value="28.9784" min="-180" max="180" required /></label>
                 <label>Ülke<input id="birthCountry" value="Türkiye" required /></label>
-                <label>Ev sistemi<select id="birthHouse"><option>Placidus</option><option>Whole Sign</option><option>Equal</option></select></label>
+                <label>Ev sistemi<select id="birthHouse"><option>Whole Sign</option><option>Placidus</option><option>Equal</option></select></label>
               </div>
               <p class="helper" style="margin-top:12px;">Doğum verisi ekranında tarih, saat ve yer bilgisi net girilmelidir; astro.com ve benzeri chart akışlarında da isim, doğum tarihi, dakika düzeyinde saat ve doğum yeri temel alanlardır. Doğum yeri için şehir bazlı arama ve doğru şehir seçimi kritik kabul edilir. [web:53][web:56][web:59]</p>
               <div class="btn-row" style="margin-top:16px;"><button class="btn primary" id="processBirthBtn">Doğum Bilgisini İşle</button><button class="btn" id="previewBirthBtn">JSON Önizle</button></div>
@@ -482,7 +532,9 @@
             </div>
           </article>
         </div>
-            <section id="auth" class="screen">
+      </section>
+
+      <section id="auth" class="screen">
         <div class="grid-2">
           <article class="card">
             <div class="card-inner">
@@ -553,18 +605,27 @@ const root = document.documentElement;
     const headerLogoutBtn = document.getElementById('headerLogoutBtn');
     const profileForm = document.getElementById('profileForm');
     const removeAvatarBtn = document.getElementById('removeAvatarBtn');
-    const BODY_REGISTRY = [
-      { code: 'Sun', command: '10' },
-      { code: 'Moon', command: '301' },
-      { code: 'Mercury', command: '199' },
-      { code: 'Venus', command: '299' },
-      { code: 'Mars', command: '499' },
-      { code: 'Jupiter', command: '599' },
-      { code: 'Saturn', command: '699' },
-      { code: 'Uranus', command: '799' },
-      { code: 'Neptune', command: '899' },
-      { code: 'Pluto', command: '999' }
-    ];
+
+    const CITY_COORDS = {
+      'Istanbul': { lat: 41.0082, lon: 28.9784 }, 'Ankara': { lat: 39.9208, lon: 32.8541 },
+      'Izmir': { lat: 38.4192, lon: 27.1287 }, 'Bursa': { lat: 40.1885, lon: 29.0610 },
+      'Antalya': { lat: 36.8969, lon: 30.7133 }, 'London': { lat: 51.5074, lon: -0.1278 },
+      'New York': { lat: 40.7128, lon: -74.0060 }, 'Paris': { lat: 48.8566, lon: 2.3522 },
+      'Berlin': { lat: 52.5200, lon: 13.4050 }, 'Tokyo': { lat: 35.6762, lon: 139.6503 },
+      'Moscow': { lat: 55.7558, lon: 37.6173 }, 'Cairo': { lat: 30.0444, lon: 31.2357 },
+      'Mumbai': { lat: 19.0760, lon: 72.8777 }, 'Sydney': { lat: -33.8688, lon: 151.2093 },
+      'Los Angeles': { lat: 34.0522, lon: -118.2437 }, 'Chicago': { lat: 41.8781, lon: -87.6298 },
+      'Toronto': { lat: 43.6532, lon: -79.3832 }, 'Dubai': { lat: 25.2048, lon: 55.2708 },
+      'Singapore': { lat: 1.3521, lon: 103.8198 }, 'Athens': { lat: 37.9838, lon: 23.7275 },
+      'Rome': { lat: 41.9028, lon: 12.4964 }, 'Madrid': { lat: 40.4168, lon: -3.7038 },
+      'Amsterdam': { lat: 52.3676, lon: 4.9041 }, 'Vienna': { lat: 48.2082, lon: 16.3738 },
+      'Warsaw': { lat: 52.2297, lon: 21.0122 }, 'Tehran': { lat: 35.6892, lon: 51.3890 },
+      'Riyadh': { lat: 24.7136, lon: 46.6753 }, 'Buenos Aires': { lat: -34.6037, lon: -58.3816 },
+      'Sao Paulo': { lat: -23.5505, lon: -46.6333 }, 'Mexico City': { lat: 19.4326, lon: -99.1332 },
+      'Stockholm': { lat: 59.3293, lon: 18.0686 }, 'Beijing': { lat: 39.9042, lon: 116.4074 },
+      'Seoul': { lat: 37.5665, lon: 126.9780 }, 'Bangkok': { lat: 13.7563, lon: 100.5018 },
+      'Nairobi': { lat: -1.2921, lon: 36.8219 }, 'Johannesburg': { lat: -26.2041, lon: 28.0473 },
+    };
 
     themeToggle.addEventListener('click', () => {
       root.setAttribute('data-theme', root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
@@ -581,16 +642,22 @@ const root = document.documentElement;
       });
     });
 
-    const getBirthPayload = () => ({
-      name: document.getElementById('birthName').value.trim(),
-      zodiac: document.getElementById('birthZodiac').value,
-      date: document.getElementById('birthDate').value,
-      time: document.getElementById('birthTime').value,
-      city: document.getElementById('birthCity').value.trim(),
-      country: document.getElementById('birthCountry').value.trim(),
-      timezone: document.getElementById('birthTimezone').value,
-      houseSystem: document.getElementById('birthHouse').value
-    });
+    const getBirthPayload = () => {
+      const city = document.getElementById('birthCity').value.trim();
+      const coords = CITY_COORDS[city];
+      return {
+        name: document.getElementById('birthName').value.trim(),
+        zodiac: document.getElementById('birthZodiac').value,
+        date: document.getElementById('birthDate').value,
+        time: document.getElementById('birthTime').value,
+        city,
+        country: document.getElementById('birthCountry').value.trim(),
+        timezone: document.getElementById('birthTimezone').value,
+        houseSystem: document.getElementById('birthHouse').value,
+        lat: parseFloat(document.getElementById('birthLat').value) || (coords?.lat ?? 41.0082),
+        lon: parseFloat(document.getElementById('birthLon').value) || (coords?.lon ?? 28.9784),
+      };
+    };
 
     const zodiacSigns = ['Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo', 'Libra', 'Scorpio', 'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces'];
     const dailyThemes = {
@@ -667,34 +734,66 @@ const root = document.documentElement;
     };
 
     const toUtcIso = payload => {
-      const tzMap = {
-        'UTC': 0,
-        'Europe/Istanbul': 3,
-        'Europe/London': 0,
-        'America/New_York': -4
-      };
-      const offset = tzMap[payload.timezone] ?? 0;
-      const local = new Date(`${payload.date}T${payload.time}:00`);
-      const utcMs = local.getTime() - offset * 60 * 60 * 1000;
-      return new Date(utcMs).toISOString();
+      try {
+        const naive = new Date(`${payload.date}T${payload.time}:00`);
+        const localStr = naive.toLocaleString('sv-SE', { timeZone: payload.timezone });
+        const utcStr = naive.toLocaleString('sv-SE', { timeZone: 'UTC' });
+        const offsetMs = new Date(localStr + 'Z').getTime() - new Date(utcStr + 'Z').getTime();
+        return new Date(naive.getTime() - offsetMs).toISOString();
+      } catch (e) {
+        const tzMap = { 'UTC': 0, 'Europe/Istanbul': 3, 'Europe/London': 1, 'America/New_York': -5,
+          'Asia/Tokyo': 9, 'Europe/Berlin': 1, 'Europe/Paris': 1, 'Europe/Moscow': 3,
+          'Asia/Dubai': 4, 'Asia/Singapore': 8, 'Australia/Sydney': 10, 'America/Los_Angeles': -8,
+          'America/Chicago': -6, 'Asia/Tehran': 3.5, 'Asia/Kolkata': 5.5, 'Africa/Cairo': 2 };
+        const offset = tzMap[payload.timezone] ?? 0;
+        const local = new Date(`${payload.date}T${payload.time}:00`);
+        return new Date(local.getTime() - offset * 3600000).toISOString();
+      }
     };
 
-    const buildHorizonsUrl = payload => {
+    const buildHorizonsUrl = (payload, lat, lon) => {
       const utcIso = toUtcIso(payload).replace('.000Z', '');
       const base = 'https://ssd.jpl.nasa.gov/api/horizons.api';
       const params = new URLSearchParams({
-        format: 'text',
-        MAKE_EPHEM: 'YES',
-        EPHEM_TYPE: 'OBSERVER',
-        CENTER: 'coord@399',
-        COORD_TYPE: 'GEODETIC',
-        SITE_COORD: '28.9784,41.0082,0.039',
-        TLIST: utcIso,
-        COMMAND: '10',
-        QUANTITIES: '1,20'
+        format: 'text', MAKE_EPHEM: 'YES', EPHEM_TYPE: 'OBSERVER',
+        CENTER: 'coord@399', COORD_TYPE: 'GEODETIC',
+        SITE_COORD: `${(lon || 28.9784).toFixed(4)},${(lat || 41.0082).toFixed(4)},0.039`,
+        TLIST: utcIso, COMMAND: '10', QUANTITIES: '1,20'
       });
       return `${base}?${params.toString()}`;
     };
+
+    const calcObliquity = date => {
+      const jd = date.getTime() / 86400000 + 2440587.5;
+      const T = (jd - 2451545.0) / 36525.0;
+      return 23.439291111 - 0.013004167 * T - 0.000000164 * T * T + 0.000000504 * T * T * T;
+    };
+
+    const calcAscendant = (date, lat, lon) => {
+      const gmst = Astronomy.SiderealTime(date);
+      const lmst = gmst + lon / 15.0;
+      const ramc = ((lmst * 15.0) % 360.0 + 360.0) % 360.0;
+      const eps = calcObliquity(date);
+      const epsRad = eps * Math.PI / 180.0;
+      const latRad = lat * Math.PI / 180.0;
+      const ramcRad = ramc * Math.PI / 180.0;
+      const y = Math.cos(ramcRad);
+      const x = -(Math.sin(ramcRad) * Math.cos(epsRad) + Math.tan(latRad) * Math.sin(epsRad));
+      let asc = Math.atan2(y, x) * 180.0 / Math.PI;
+      return ((asc % 360.0) + 360.0) % 360.0;
+    };
+
+    const getHouseWhole = (planetLon, ascLon) => {
+      const ascSign = Math.floor(((ascLon % 360) + 360) % 360 / 30);
+      const planetSign = Math.floor(((planetLon % 360) + 360) % 360 / 30);
+      return ((planetSign - ascSign + 12) % 12) + 1;
+    };
+
+    const ASTRO_BODY_LIST = [
+      ['Sun', 'Sun'], ['Moon', 'Moon'], ['Mercury', 'Mercury'], ['Venus', 'Venus'],
+      ['Mars', 'Mars'], ['Jupiter', 'Jupiter'], ['Saturn', 'Saturn'],
+      ['Uranus', 'Uranus'], ['Neptune', 'Neptune'], ['Pluto', 'Pluto'],
+    ];
 
     const getSignFromDegrees = degrees => zodiacSigns[Math.floor((((degrees % 360) + 360) % 360) / 30)];
 
@@ -707,24 +806,64 @@ const root = document.documentElement;
       return `${String(deg).padStart(2, '0')}° ${zodiacSigns[signIndex]} ${String(minute).padStart(2, '0')}′`;
     };
 
+    const realEphemeris = (payload, lat, lon) => {
+      const utcIso = toUtcIso(payload);
+      const date = new Date(utcIso);
+      const tomorrow = new Date(date.getTime() + 86400000);
+      const ascLon = calcAscendant(date, lat, lon);
+
+      return ASTRO_BODY_LIST.map(([code, bodyName]) => {
+        const body = Astronomy.Body[bodyName];
+        const gv = Astronomy.GeoVector(body, date, false);
+        const ecl = Astronomy.Ecliptic(gv);
+        const rawLon = ((ecl.elon % 360) + 360) % 360;
+
+        const r = Math.sqrt(gv.x * gv.x + gv.y * gv.y + gv.z * gv.z);
+        const decl = Math.asin(gv.z / r) * 180 / Math.PI;
+
+        const gv2 = Astronomy.GeoVector(body, tomorrow, false);
+        const ecl2 = Astronomy.Ecliptic(gv2);
+        let speed = ecl2.elon - ecl.elon;
+        if (speed > 180) speed -= 360;
+        if (speed < -180) speed += 360;
+
+        return {
+          body: code, rawLon,
+          longitude: formatLongitude(rawLon),
+          latitude: `${ecl.elat.toFixed(2)}°`,
+          speed: `${Math.abs(speed).toFixed(2)}°/gün`,
+          declination: `${decl.toFixed(2)}°`,
+          house: getHouseWhole(rawLon, ascLon),
+          retrograde: speed < 0 ? 'R' : 'D',
+        };
+      });
+    };
+
     const mockEphemeris = payload => {
       const seed = `${payload.date}${payload.time}${payload.name}`.split('').reduce((acc, ch) => acc + ch.charCodeAt(0), 0);
-      return BODY_REGISTRY.map((body, index) => {
-        const base = (seed * (index + 3) * 0.137) % 360;
+      const bodies = ['Sun','Moon','Mercury','Venus','Mars','Jupiter','Saturn','Uranus','Neptune','Pluto'];
+      return bodies.map((code, index) => {
+        const rawLon = (seed * (index + 3) * 0.137) % 360;
         const lat = (((seed + index * 17) % 120) - 60) / 10;
         const speed = index === 1 ? 12 + ((seed % 90) / 100) : 0.02 + ((seed + index * 13) % 130) / 100;
         const decl = (((seed + index * 21) % 500) / 10) - 25;
-        const house = ((Math.floor(base / 30) + index) % 12) + 1;
         return {
-          body: body.code,
-          longitude: formatLongitude(base),
+          body: code, rawLon,
+          longitude: formatLongitude(rawLon),
           latitude: `${lat.toFixed(2)}°`,
           speed: `${speed.toFixed(2)}°/gün`,
           declination: `${decl.toFixed(2)}°`,
-          house: house,
-          retrograde: speed < 0.1 ? 'R' : 'D'
+          house: ((Math.floor(rawLon / 30) + index) % 12) + 1,
+          retrograde: speed < 0.1 ? 'R' : 'D',
         };
       });
+    };
+
+    const computeEphemeris = (payload, lat, lon) => {
+      if (typeof Astronomy !== 'undefined') {
+        try { return realEphemeris(payload, lat, lon); } catch (e) { console.warn('Astronomy Engine hatası, mock kullanılıyor:', e); }
+      }
+      return mockEphemeris(payload);
     };
 
     const renderWeeklyHoroscopes = () => {
@@ -754,14 +893,13 @@ const root = document.documentElement;
       }).join('');
     };
 
-    const renderSignInterpretations = rows => {
+    const renderSignInterpretations = (rows, ascLon) => {
       const sunRow = rows.find(row => row.body === 'Sun');
       const moonRow = rows.find(row => row.body === 'Moon');
-      const risingIndex = ((rows[0].house + 11) % 12);
-      const risingSign = zodiacSigns[risingIndex];
+      const risingSign = ascLon !== undefined ? getSignFromDegrees(ascLon) : zodiacSigns[((rows[0].house + 11) % 12)];
       const signBox = sign => signTexts[sign] || { title: sign, summary: 'Yorum hazırlanıyor.', detail: 'Bu burç için içerik henüz eklenmedi.' };
-      const sunSign = getSignFromDegrees(parseFloat(sunRow.longitude));
-      const moonSign = getSignFromDegrees(parseFloat(moonRow.longitude));
+      const sunSign = getSignFromDegrees(sunRow.rawLon);
+      const moonSign = getSignFromDegrees(moonRow.rawLon);
       const sunText = signBox(sunSign);
       const moonText = signBox(moonSign);
       const risingText = signBox(risingSign);
@@ -771,28 +909,43 @@ const root = document.documentElement;
         <div class="item"><strong>Rising in ${risingText.title}</strong><span class="muted">Yükselen; ilk izlenim, dışa açılan yaklaşım ve hayata giriş biçimiyle ilişkilendirilir.</span><div class="helper" style="margin-top:8px;">Sun, Moon ve Rising birlikte yorumlandığında; Sun çekirdek kimliği, Moon duygusal ihtiyaçları, Rising ise dışa yansıyan yaklaşımı temsil eder. [web:97]</div></div>`;
     };
 
-    const renderEphemeris = payload => {
+    const renderEphemeris = (payload, lat, lon) => {
       const tableBody = document.getElementById('ephemerisTableBody');
-      const rows = mockEphemeris(payload);
-      tableBody.innerHTML = rows.map(row => `<tr><td>${row.body}</td><td>${row.longitude}</td><td>${row.longitude.split(' ')[1]} / ${row.house}. ev</td><td>${row.latitude}</td><td>${row.speed}</td><td>${row.declination}</td><td>${row.retrograde}</td></tr>`).join('');
+      const rows = computeEphemeris(payload, lat, lon);
+      const isReal = typeof Astronomy !== 'undefined';
+      let ascLon;
+      if (isReal) {
+        try { ascLon = calcAscendant(new Date(toUtcIso(payload)), lat, lon); } catch(e) {}
+      }
+      tableBody.innerHTML = rows.map(row => `<tr><td>${row.body}</td><td>${row.longitude}</td><td>${getSignFromDegrees(row.rawLon)} / ${row.house}. ev</td><td>${row.latitude}</td><td>${row.speed}</td><td>${row.declination}</td><td>${row.retrograde}</td></tr>`).join('');
       document.getElementById('ephemerisPanel').style.display = 'block';
-      document.getElementById('ephemerisUrl').textContent = buildHorizonsUrl(payload);
+      const panelTitle = document.querySelector('#ephemerisPanel .success strong');
+      if (panelTitle) panelTitle.textContent = isReal ? 'Gerçek efemeris çıktısı (Astronomy Engine)' : 'Efemeris çıktısı (mock fallback)';
+      document.getElementById('ephemerisUrl').textContent = buildHorizonsUrl(payload, lat, lon);
       document.getElementById('ephemerisUtc').textContent = toUtcIso(payload);
-      renderSignInterpretations(rows);
+      renderSignInterpretations(rows, ascLon);
     };
 
     const renderBirthResult = payload => {
       const message = document.getElementById('birthMessage');
       const result = document.getElementById('birthResult');
-      const iso = `${payload.date}T${payload.time}:00`;
-      document.getElementById('resultIso').textContent = iso;
-      document.getElementById('resultLocation').textContent = `${payload.city}, ${payload.country} (${payload.timezone})`;
+      document.getElementById('resultIso').textContent = toUtcIso(payload);
+      document.getElementById('resultLocation').textContent = `${payload.city}, ${payload.country} (${payload.lat?.toFixed(4)}°N, ${payload.lon?.toFixed(4)}°E)`;
       document.getElementById('resultProfile').textContent = `${payload.zodiac} / ${payload.houseSystem}`;
-      document.getElementById('resultStatus').textContent = 'Natal chart için hazır';
+      document.getElementById('resultStatus').textContent = typeof Astronomy !== 'undefined' ? 'Gerçek efemeris aktif' : 'Mock efemeris (fallback)';
       result.style.display = 'grid';
-      message.innerHTML = `<div class="success"><strong>Doğum bilgisi işlendi.</strong><div class="helper" style="margin-top:6px;">Veri istemci tarafında doğrulandı ve chart isteği için normalize edildi.</div></div>`;
-      renderEphemeris(payload);
+      message.innerHTML = `<div class="success"><strong>Doğum bilgisi işlendi.</strong><div class="helper" style="margin-top:6px;">${typeof Astronomy !== 'undefined' ? 'Astronomy Engine ile gerçek gezegen konumları hesaplandı.' : 'Astronomy Engine yüklenemedi, mock veri kullanılıyor.'}</div></div>`;
+      renderEphemeris(payload, payload.lat, payload.lon);
     };
+
+    document.getElementById('birthCity')?.addEventListener('input', () => {
+      const city = document.getElementById('birthCity').value.trim();
+      const coords = CITY_COORDS[city];
+      if (coords) {
+        document.getElementById('birthLat').value = coords.lat;
+        document.getElementById('birthLon').value = coords.lon;
+      }
+    });
 
     processBirthBtn?.addEventListener('click', () => {
       const payload = getBirthPayload();
