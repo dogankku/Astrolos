@@ -2,15 +2,15 @@
 
 - **Package name:** `com.dogankku.astrolos`
 - **Default language:** English (United States) – en-US
-- **Extra translation:** Turkish – tr-TR
+- **Store listing language:** English only (no translations)
 - **App or game:** App · **Free**
 - **Category:** Lifestyle
 - **Privacy policy URL:** https://dogankku.github.io/Astrolos/privacy.html
-- **Graphics:** `app-icon-512.png`, `<lang>/feature-graphic-1024x500.png`, `<lang>/1…5-*.png` (phone screenshots, 1082×1922)
+- **Graphics:** `app-icon-512.png`, `en-US/feature-graphic-1024x500.png`, `en-US/1…5-*.png` (phone screenshots, 1082×1922)
 
 ---
 
-## English (en-US) – default
+## English (en-US)
 
 **App name (max 30):**
 Astrolos: Horoscope & Chart
@@ -51,48 +51,6 @@ Astrolos is for entertainment and self-reflection; readings are not professional
 
 ---
 
-## Türkçe (tr-TR)
-
-**Uygulama adı (en fazla 30):**
-Astrolos: Horoscope & Chart
-
-> Uygulama adı her dilde İngilizce kalır; Türkçe sayfada yalnızca açıklamalar Türkçedir.
-
-**Kısa açıklama (en fazla 80):**
-Ücretsiz doğum haritası, günlük burç yorumu ve aşk uyumu. Gerçek gökyüzü verisi.
-
-**Tam açıklama:**
-Astrolos gerçek gökyüzünü senin hikâyene dönüştürür.
-
-Doğum haritan, doğduğun andaki gerçek gezegen konumlarıyla hesaplanır; sadece güneş burcuna göre yazılmış genel metinler değil. Güneş, Ay ve yükselen burcunu keşfet, her gezegeni evindeki yeriyle şık bir harita çarkında gör ve en güçlü açıların senin hakkında ne söylediğini oku.
-
-✦ ÜCRETSİZ DOĞUM HARİTASI
-• Güneş, Ay ve yükselen burç, anlaşılır yorumlarla
-• 10 gezegenin burcu, derecesi, evi ve retro durumu
-• Evler ve açı çizgileriyle harita çarkı
-• Element ve nitelik dengesi (ateş, toprak, hava, su)
-• Tam Burç veya Eşit Ev sistemi, Tropikal veya Sidereal (Lahiri) zodyak
-• Otomatik saat dilimi ve tarihsel yaz saati destekli şehir arama
-
-☽ GÜNLÜK, HAFTALIK VE AYLIK BURÇ YORUMLARI
-• 12 burç için aşk, kariyer, sağlık ve enerji yorumları
-• Canlı hesaplanan Ay evresi, Ay burcu ve retro gezegenler
-• Kişisel bölüm: Ay bugün haritanda hangi evi aydınlatıyor
-• Şanslı renk, şanslı sayı ve uyumlu burç
-
-♡ UYUM
-• Hızlı burç uyumu puanı
-• Detaylı sinastri: iki doğum haritasını aşk, iletişim, duygusal bağ ve uzun vade açısından karşılaştır
-• İlişkinizi tanımlayan açılar, sade bir dille
-
-🔒 GİZLİLİK ÖNCELİKLİ
-• Hesap yok, kayıt yok, reklam yok, takip yok
-• Doğum bilgilerin ve kayıtlı haritaların cihazında kalır
-• İngilizce ve Türkçe
-
-Astrolos eğlence ve öz-farkındalık amaçlıdır; yorumlar profesyonel tavsiye yerine geçmez.
-
----
 
 ## Play Console – App content answers
 
