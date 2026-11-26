@@ -54,9 +54,9 @@ Astrolos is for entertainment and self-reflection; readings are not professional
 ## Türkçe (tr-TR)
 
 **Uygulama adı (en fazla 30):**
-Astrolos: Burç ve Harita
+Astrolos: Horoscope & Chart
 
-> Not: "Astrolos: Burç & Doğum Haritası" 31 karakter olduğu için sığmıyor. Alternatif: "Astrolos: Doğum Haritası" (24).
+> Uygulama adı her dilde İngilizce kalır; Türkçe sayfada yalnızca açıklamalar Türkçedir.
 
 **Kısa açıklama (en fazla 80):**
 Ücretsiz doğum haritası, günlük burç yorumu ve aşk uyumu. Gerçek gökyüzü verisi.
