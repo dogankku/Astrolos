@@ -1,18 +1,17 @@
 <!DOCTYPE html>
-<html lang="tr" data-theme="dark">
+<html lang="en" data-theme="dark">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<title>Asteria · Doğum Haritası, Günlük Burç Yorumları ve Uyum</title>
-<meta name="description" content="Ücretsiz doğum haritanı çıkar, günlük burç yorumunu oku, sevdiğinle uyumunu keşfet. Gerçek gökyüzü verileriyle hesaplanır." />
+<title>Astrolos · Birth Chart, Daily Horoscope & Compatibility</title>
+<meta name="description" content="Get your free birth chart, read your daily horoscope and discover your compatibility. Calculated from real sky data." />
 <meta name="theme-color" content="#0c0a24" />
-<meta property="og:title" content="Asteria · Yıldızların dili, senin hikâyen" />
-<meta property="og:description" content="Ücretsiz doğum haritası, günlük burç yorumları ve ilişki uyumu." />
+<meta property="og:title" content="Astrolos · The language of the stars, your story" />
+<meta property="og:description" content="Free birth chart, daily horoscopes and relationship compatibility." />
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%230c0a24'/%3E%3Cpath d='M32 10l4 18 18 4-18 4-4 18-4-18-18-4 18-4z' fill='%23e8c27a'/%3E%3C/svg%3E" />
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
-<script src="https://cdn.jsdelivr.net/npm/astronomy-engine@2.1.19/astronomy.browser.min.js"></script>
+<link rel="stylesheet" href="vendor/fonts/fonts.css" />
+<script src="vendor/astronomy.browser.min.js"></script>
+<script src="i18n.js"></script>
 <style>
 :root{
   --bg:#0c0a24; --bg2:#15123a; --ink:#f3efff; --ink2:#b9b3d9; --ink3:#857fae;
@@ -47,7 +46,7 @@ h1,h2,h3{font-family:var(--font-d);font-weight:600;letter-spacing:-.01em;line-he
 .glyph{font-family:"Segoe UI Symbol","Noto Sans Symbols","Apple Symbols",sans-serif;font-variant-emoji:text}
 
 /* header */
-.topbar{position:sticky;top:0;z-index:30;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);background:color-mix(in srgb,var(--bg) 70%,transparent);border-bottom:1px solid var(--line)}
+.topbar{position:sticky;top:0;z-index:30;padding-top:env(safe-area-inset-top);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);background:color-mix(in srgb,var(--bg) 70%,transparent);border-bottom:1px solid var(--line)}
 .topbar .wrap{display:flex;align-items:center;gap:16px;height:68px}
 .logo{display:flex;align-items:center;gap:10px;text-decoration:none;font-family:var(--font-d);font-size:1.45rem;font-weight:700}
 .logo-mark{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at 30% 30%,var(--gold2),var(--gold) 55%,#8a6a2c);color:#1b1533;font-size:1rem;box-shadow:0 0 24px rgba(232,194,122,.45)}
@@ -57,12 +56,13 @@ h1,h2,h3{font-family:var(--font-d);font-weight:600;letter-spacing:-.01em;line-he
 .nav a[aria-current="page"]{color:var(--ink);background:var(--card2)}
 .icon-btn{width:40px;height:40px;border-radius:50%;border:1px solid var(--line);background:var(--card);display:grid;place-items:center}
 .icon-btn svg{width:18px;height:18px}
+.lang-btn{font-weight:800;font-size:.78rem;letter-spacing:.04em}
 
 /* bottom nav mobile */
 .tabbar{display:none}
 @media (max-width:820px){
   .nav{display:none}
-  .topbar .icon-btn{margin-left:auto}
+  .topbar .lang-btn{margin-left:auto}
   .tabbar{display:grid;grid-template-columns:repeat(5,1fr);position:fixed;bottom:0;left:0;right:0;z-index:40;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-top:1px solid var(--line);padding:6px 4px calc(6px + env(safe-area-inset-bottom))}
   .tabbar a{display:flex;flex-direction:column;align-items:center;gap:2px;text-decoration:none;font-size:.7rem;font-weight:600;color:var(--ink3);padding:6px 0;border-radius:12px}
   .tabbar a svg{width:22px;height:22px}
@@ -205,7 +205,7 @@ details.adv .row{margin-top:12px}
 .b3 .v .glyph{color:var(--gold)}
 .b3 p{margin:0;font-size:.92rem;color:var(--ink2)}
 .bars{display:grid;gap:10px}
-.bar{display:grid;grid-template-columns:90px 1fr 40px;align-items:center;gap:10px;font-size:.88rem;font-weight:600}
+.bar{display:grid;grid-template-columns:118px 1fr 44px;align-items:center;gap:10px;font-size:.88rem;font-weight:600}
 .bar .track{height:10px;border-radius:99px;background:var(--card2);overflow:hidden}
 .bar .fill{height:100%;border-radius:99px;transition:width .8s ease}
 .planet-list{display:grid;gap:10px}
@@ -250,34 +250,35 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
 
 <header class="topbar">
   <div class="wrap">
-    <a class="logo" href="#bugun" aria-label="Asteria ana sayfa"><span class="logo-mark">✦</span>Asteria</a>
-    <nav class="nav" aria-label="Ana menü">
-      <a href="#bugun" data-nav="bugun">Bugün</a>
-      <a href="#burclar" data-nav="burclar">Burçlar</a>
-      <a href="#harita" data-nav="harita">Doğum Haritası</a>
-      <a href="#uyum" data-nav="uyum">Uyum</a>
-      <a href="#profil" data-nav="profil">Haritalarım</a>
+    <a class="logo" href="#bugun" data-i18n-aria="homeAria"><span class="logo-mark">✦</span>Astrolos</a>
+    <nav class="nav" data-i18n-aria="mainMenu">
+      <a href="#bugun" data-nav="bugun" data-i18n="navToday"></a>
+      <a href="#burclar" data-nav="burclar" data-i18n="navSigns"></a>
+      <a href="#harita" data-nav="harita" data-i18n="navChart"></a>
+      <a href="#uyum" data-nav="uyum" data-i18n="navCompat"></a>
+      <a href="#profil" data-nav="profil" data-i18n="navMine"></a>
     </nav>
-    <button class="icon-btn" id="themeBtn" aria-label="Açık/koyu tema">
+    <button class="icon-btn lang-btn" id="langBtn" data-i18n-aria="langAria"><span data-i18n="langBtn"></span></button>
+    <button class="icon-btn" id="themeBtn" data-i18n-aria="themeAria">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
     </button>
   </div>
 </header>
 
 <main>
-<!-- ============ BUGÜN ============ -->
+<!-- ============ TODAY ============ -->
 <div class="page" id="page-bugun">
   <div class="wrap">
     <div class="hero">
       <div>
-        <div class="eyebrow" id="todayLabel">Bugün</div>
-        <h1 style="margin-top:10px">Yıldızların dili,<br><em>senin hikâyen.</em></h1>
-        <p class="lead">Gerçek gökyüzü verileriyle hesaplanan ücretsiz doğum haritanı çıkar, burcunun günlük yorumunu oku ve sevdiğinle aranızdaki uyumu keşfet.</p>
+        <div class="eyebrow" id="todayLabel"></div>
+        <h1 style="margin-top:10px" data-i18n="heroTitle"></h1>
+        <p class="lead" data-i18n="heroLead"></p>
         <div class="hero-cta">
-          <a class="btn primary" href="#harita">Doğum haritamı çıkar</a>
-          <a class="btn" href="#burclar">Günlük burç yorumum</a>
+          <a class="btn primary" href="#harita" data-i18n="ctaChart"></a>
+          <a class="btn" href="#burclar" data-i18n="ctaHoro"></a>
         </div>
-        <div class="trust"><span>Ücretsiz</span><span>Kayıt gerekmez</span><span>Veriler cihazında kalır</span></div>
+        <div class="trust"><span data-i18n="trust1"></span><span data-i18n="trust2"></span><span data-i18n="trust3"></span></div>
       </div>
       <div class="hero-art" aria-hidden="true">
         <svg class="ring" id="heroRing" viewBox="0 0 400 400"></svg>
@@ -288,30 +289,30 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
     <div id="meBanner"></div>
 
     <section class="block">
-      <div class="sec-head"><div><div class="eyebrow">Canlı veri</div><h2>Bugünün gökyüzü</h2></div><span class="muted" id="skyTime"></span></div>
+      <div class="sec-head"><div><div class="eyebrow" data-i18n="liveData"></div><h2 data-i18n="todaySky"></h2></div><span class="muted" id="skyTime"></span></div>
       <div class="grid g4" id="skyCards"></div>
     </section>
 
     <section class="block">
-      <div class="sec-head"><div><div class="eyebrow">Günlük yorum</div><h2>Burcunu seç</h2></div></div>
+      <div class="sec-head"><div><div class="eyebrow" data-i18n="dailyReading"></div><h2 data-i18n="pickSign"></h2></div></div>
       <div class="zgrid" id="homeZodiac"></div>
     </section>
 
     <section class="block">
       <div class="grid g3">
-        <div class="card feature"><div class="ico glyph">◎</div><h3>Doğum haritası</h3><p>Güneş, Ay ve yükselen burcunu, gezegenlerin evlerdeki yerini ve aralarındaki açıları görsel bir çarkla keşfet.</p><a href="#harita">Haritamı çıkar →</a></div>
-        <div class="card feature"><div class="ico">♡</div><h3>İlişki uyumu</h3><p>İki doğum haritasını karşılaştır; aşk, iletişim ve duygusal bağ için uyum puanını öğren.</p><a href="#uyum">Uyumumuza bak →</a></div>
-        <div class="card feature"><div class="ico glyph">☽</div><h3>Ay döngüsü</h3><p>Ay'ın evresi ve bulunduğu burç günün ruh halini etkiler. Ay'ın bugün senin haritanda hangi alanı aydınlattığını gör.</p><a href="#burclar">Bugüne bak →</a></div>
+        <div class="card feature"><div class="ico glyph">◎</div><h3 data-i18n="f1t"></h3><p data-i18n="f1p"></p><a href="#harita" data-i18n="f1a"></a></div>
+        <div class="card feature"><div class="ico">♡</div><h3 data-i18n="f2t"></h3><p data-i18n="f2p"></p><a href="#uyum" data-i18n="f2a"></a></div>
+        <div class="card feature"><div class="ico glyph">☽</div><h3 data-i18n="f3t"></h3><p data-i18n="f3p"></p><a href="#burclar" data-i18n="f3a"></a></div>
       </div>
     </section>
   </div>
 </div>
 
-<!-- ============ BURÇLAR ============ -->
+<!-- ============ SIGNS ============ -->
 <div class="page" id="page-burclar">
   <div class="wrap">
     <section class="block">
-      <div class="chips" id="signChips" role="toolbar" aria-label="Burç seç"></div>
+      <div class="chips" id="signChips" role="toolbar" data-i18n-aria="pickSignAria"></div>
       <div class="sign-hero">
         <div class="glyph-xl glyph" id="shGlyph"></div>
         <div>
@@ -320,10 +321,10 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
           <div class="meta" id="shMeta"></div>
         </div>
       </div>
-      <div class="tabs" role="tablist" aria-label="Dönem">
-        <button class="tab" role="tab" data-period="day" aria-selected="true">Günlük</button>
-        <button class="tab" role="tab" data-period="week" aria-selected="false">Haftalık</button>
-        <button class="tab" role="tab" data-period="month" aria-selected="false">Aylık</button>
+      <div class="tabs" role="tablist" data-i18n-aria="periodAria">
+        <button class="tab" role="tab" data-period="day" aria-selected="true" data-i18n="daily"></button>
+        <button class="tab" role="tab" data-period="week" aria-selected="false" data-i18n="weekly"></button>
+        <button class="tab" role="tab" data-period="month" aria-selected="false" data-i18n="monthly"></button>
       </div>
       <div class="grid" style="gap:16px">
         <div class="card">
@@ -335,16 +336,16 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
         <div class="card"><div class="lucky" id="hLucky"></div></div>
         <div class="grid g2">
           <div class="card">
-            <h3 style="font-size:1.25rem">Burç profili</h3>
+            <h3 style="font-size:1.25rem" data-i18n="signProfile"></h3>
             <p id="spDesc" style="color:var(--ink2)"></p>
-            <b style="font-size:.85rem">Güçlü yönler</b><div class="trait-list" id="spStr"></div>
-            <b style="font-size:.85rem;display:block;margin-top:12px">Gelişim alanları</b><div class="trait-list" id="spWeak"></div>
+            <b style="font-size:.85rem" data-i18n="strengths"></b><div class="trait-list" id="spStr"></div>
+            <b style="font-size:.85rem;display:block;margin-top:12px" data-i18n="growth"></b><div class="trait-list" id="spWeak"></div>
           </div>
           <div class="card">
-            <h3 style="font-size:1.25rem">En uyumlu burçlar</h3>
-            <p class="muted" style="margin:6px 0 12px">Element uyumuna göre</p>
+            <h3 style="font-size:1.25rem" data-i18n="bestMatches"></h3>
+            <p class="muted" style="margin:6px 0 12px" data-i18n="byElement"></p>
             <div class="grid" id="spCompat" style="grid-template-columns:repeat(3,1fr);gap:10px"></div>
-            <a class="btn small" href="#uyum" style="margin-top:16px">Detaylı uyum testi →</a>
+            <a class="btn small" href="#uyum" style="margin-top:16px" data-i18n="detailedTest"></a>
           </div>
         </div>
       </div>
@@ -352,49 +353,49 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
   </div>
 </div>
 
-<!-- ============ HARİTA ============ -->
+<!-- ============ CHART ============ -->
 <div class="page" id="page-harita">
   <div class="wrap">
     <section class="block">
-      <div class="sec-head"><div><div class="eyebrow">Ücretsiz</div><h2>Doğum haritası</h2></div></div>
+      <div class="sec-head"><div><div class="eyebrow" data-i18n="free"></div><h2 data-i18n="birthChart"></h2></div></div>
       <div class="chart-layout">
         <div class="card">
           <form class="form" id="natalForm" novalidate>
-            <label class="f">Adın<input class="inp" id="nName" placeholder="Örn. Ayşe" autocomplete="given-name" /></label>
+            <label class="f"><span data-i18n="yourName"></span><input class="inp" id="nName" data-i18n-ph="namePh" autocomplete="given-name" /></label>
             <div class="row">
-              <label class="f">Doğum tarihi<input class="inp" id="nDate" type="date" required /></label>
-              <label class="f">Doğum saati<input class="inp" id="nTime" type="time" value="12:00" /></label>
+              <label class="f"><span data-i18n="birthDate"></span><input class="inp" id="nDate" type="date" required /></label>
+              <label class="f"><span data-i18n="birthTime"></span><input class="inp" id="nTime" type="time" value="12:00" /></label>
             </div>
-            <label class="check"><input type="checkbox" id="nNoTime" /> Doğum saatimi bilmiyorum</label>
-            <label class="f">Doğum yeri
-              <div class="city"><input class="inp" id="nCity" placeholder="Şehir ara… (örn. İzmir)" autocomplete="off" role="combobox" aria-expanded="false" aria-autocomplete="list" /><div class="dropdown" id="nCityDD" role="listbox"></div></div>
+            <label class="check"><input type="checkbox" id="nNoTime" /> <span data-i18n="noTimeMine"></span></label>
+            <label class="f"><span data-i18n="birthPlace"></span>
+              <div class="city"><input class="inp" id="nCity" data-i18n-ph="cityPh" autocomplete="off" role="combobox" aria-expanded="false" aria-autocomplete="list" /><div class="dropdown" id="nCityDD" role="listbox"></div></div>
               <span class="city-ok" id="nCityOk"></span>
             </label>
             <details class="adv">
-              <summary>Gelişmiş ayarlar</summary>
+              <summary data-i18n="advanced"></summary>
               <div class="row">
-                <label class="f">Saat dilimi<select class="inp" id="nTz"></select></label>
-                <label class="f">Ev sistemi<select class="inp" id="nHouse"><option value="whole">Tam Burç (Whole Sign)</option><option value="equal">Eşit Ev (Equal)</option></select></label>
+                <label class="f"><span data-i18n="timezone"></span><select class="inp" id="nTz"></select></label>
+                <label class="f"><span data-i18n="houseSys"></span><select class="inp" id="nHouse"><option value="whole" data-i18n="wholeSign"></option><option value="equal" data-i18n="equalHouse"></option></select></label>
               </div>
               <div class="row">
-                <label class="f">Enlem<input class="inp" id="nLat" type="number" step="0.0001" /></label>
-                <label class="f">Boylam<input class="inp" id="nLon" type="number" step="0.0001" /></label>
+                <label class="f"><span data-i18n="lat"></span><input class="inp" id="nLat" type="number" step="0.0001" /></label>
+                <label class="f"><span data-i18n="lon"></span><input class="inp" id="nLon" type="number" step="0.0001" /></label>
               </div>
               <div class="row">
-                <label class="f">Zodyak<select class="inp" id="nZodiac"><option value="tropical">Tropikal (Batı)</option><option value="sidereal">Sidereal (Lahiri)</option></select></label>
+                <label class="f"><span data-i18n="zodiac"></span><select class="inp" id="nZodiac"><option value="tropical" data-i18n="tropical"></option><option value="sidereal" data-i18n="sidereal"></option></select></label>
               </div>
             </details>
             <div class="err" id="nErr" role="alert"></div>
-            <button class="btn primary" type="submit">✦ Haritamı oluştur</button>
-            <button class="btn small" type="button" id="nSample" style="justify-self:start">Örnek harita göster</button>
-            <p class="note">Doğum bilgilerin yalnızca tarayıcında işlenir; şehir araması için OpenStreetMap kullanılır.</p>
+            <button class="btn primary" type="submit" data-i18n="makeChart"></button>
+            <button class="btn small" type="button" id="nSample" style="justify-self:start" data-i18n="sampleChart"></button>
+            <p class="note" data-i18n="privacyNote"></p>
           </form>
         </div>
         <div id="natalOut">
           <div class="card empty-state">
             <div class="glyph">✦</div>
-            <h3 style="font-size:1.5rem;margin:10px 0 6px">Gökyüzü doğduğun anda nasıldı?</h3>
-            <p class="muted" style="max-width:44ch;margin:0 auto">Tarih, saat ve doğum yerini gir; gezegenlerin konumunu hesaplayıp haritanı ve yorumlarını hazırlayalım.</p>
+            <h3 style="font-size:1.5rem;margin:10px 0 6px" data-i18n="emptyTitle"></h3>
+            <p class="muted" style="max-width:44ch;margin:0 auto" data-i18n="emptyText"></p>
           </div>
         </div>
       </div>
@@ -402,39 +403,39 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
   </div>
 </div>
 
-<!-- ============ UYUM ============ -->
+<!-- ============ COMPATIBILITY ============ -->
 <div class="page" id="page-uyum">
   <div class="wrap">
     <section class="block">
-      <div class="sec-head"><div><div class="eyebrow">Hızlı test</div><h2>Burç uyumu</h2></div></div>
+      <div class="sec-head"><div><div class="eyebrow" data-i18n="quickTest"></div><h2 data-i18n="signCompat"></h2></div></div>
       <div class="card">
         <div class="vs">
-          <select class="inp" id="qA" aria-label="Birinci burç"></select>
+          <select class="inp" id="qA" data-i18n-aria="firstSign"></select>
           <span class="heart">♥</span>
-          <select class="inp" id="qB" aria-label="İkinci burç"></select>
+          <select class="inp" id="qB" data-i18n-aria="secondSign"></select>
         </div>
         <div id="qOut" style="margin-top:20px"></div>
       </div>
     </section>
 
     <section class="block">
-      <div class="sec-head"><div><div class="eyebrow">Detaylı analiz</div><h2>Sinastri: iki haritayı karşılaştır</h2></div></div>
+      <div class="sec-head"><div><div class="eyebrow" data-i18n="detailed"></div><h2 data-i18n="synTitle"></h2></div></div>
       <div class="grid g2" id="synForms"></div>
       <div class="err" id="sErr" role="alert" style="margin-top:10px"></div>
-      <button class="btn primary" id="sCalc" style="margin-top:6px">♥ Uyumumuzu hesapla</button>
+      <button class="btn primary" id="sCalc" style="margin-top:6px" data-i18n="synCalc"></button>
       <div id="synOut" style="margin-top:20px"></div>
     </section>
   </div>
 </div>
 
-<!-- ============ PROFİL ============ -->
+<!-- ============ MY CHARTS ============ -->
 <div class="page" id="page-profil">
   <div class="wrap">
     <section class="block">
-      <div class="sec-head"><div><div class="eyebrow">Bu cihazda</div><h2>Haritalarım</h2></div><a class="btn small primary" href="#harita">+ Yeni harita</a></div>
+      <div class="sec-head"><div><div class="eyebrow" data-i18n="onDevice"></div><h2 data-i18n="navMine"></h2></div><a class="btn small primary" href="#harita" data-i18n="newChart"></a></div>
       <div class="card">
         <div class="saved" id="savedList"></div>
-        <p class="note" style="margin-top:16px">Kayıtlı haritalar yalnızca bu tarayıcıda saklanır; hesap ya da şifre gerekmez. ★ ile işaretlediğin harita ana sayfada kişisel yorumlarında kullanılır.</p>
+        <p class="note" style="margin-top:16px" data-i18n="savedNote"></p>
       </div>
     </section>
   </div>
@@ -443,17 +444,17 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
 
 <footer>
   <div class="wrap">
-    <div>© <span id="yr"></span> Asteria · Gezegen konumları <a href="https://github.com/cosinekitty/astronomy" target="_blank" rel="noopener">Astronomy Engine</a> ile hesaplanır.</div>
-    <div>Yorumlar eğlence ve öz-farkındalık amaçlıdır; profesyonel tavsiye yerine geçmez.</div>
+    <div>© <span id="yr"></span> <span data-i18n="footer1"></span></div>
+    <div data-i18n="footer2"></div>
   </div>
 </footer>
 
-<nav class="tabbar" aria-label="Alt menü">
-  <a href="#bugun" data-nav="bugun"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>Bugün</a>
-  <a href="#burclar" data-nav="burclar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3l2.2 6.6H21l-5.5 4 2.1 6.6L12 16.2 6.4 20.2l2.1-6.6L3 9.6h6.8z"/></svg>Burçlar</a>
-  <a href="#harita" data-nav="harita"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4.5"/><path d="M3 12h18M12 3v18"/></svg>Harita</a>
-  <a href="#uyum" data-nav="uyum"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg>Uyum</a>
-  <a href="#profil" data-nav="profil"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg>Haritalarım</a>
+<nav class="tabbar" data-i18n-aria="bottomMenu">
+  <a href="#bugun" data-nav="bugun"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg><span data-i18n="navToday"></span></a>
+  <a href="#burclar" data-nav="burclar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3l2.2 6.6H21l-5.5 4 2.1 6.6L12 16.2 6.4 20.2l2.1-6.6L3 9.6h6.8z"/></svg><span data-i18n="navSigns"></span></a>
+  <a href="#harita" data-nav="harita"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4.5"/><path d="M3 12h18M12 3v18"/></svg><span data-i18n="navChartShort"></span></a>
+  <a href="#uyum" data-nav="uyum"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg><span data-i18n="navCompat"></span></a>
+  <a href="#profil" data-nav="profil"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg><span data-i18n="navMine"></span></a>
 </nav>
 <div class="toast" id="toast" role="status"></div>
 
@@ -535,6 +536,31 @@ const POOL = {
 const COLORS = [['Lacivert','#1f2a6b'],['Altın sarısı','#e8c27a'],['Zümrüt yeşili','#2e9d6e'],['Lavanta','#b9a6ff'],['Mercan','#ff7f6b'],['Gümüş','#c9ccd6'],['Bordo','#7d1f3a'],['Turkuaz','#3cc6c0'],['Krem','#f3e7cf'],['Şeftali','#ffbe98'],['Mor','#7a3fbf'],['Gök mavisi','#8ec5ff']];
 const MONTHS = ['Ocak','Şubat','Mart','Nisan','Mayıs','Haziran','Temmuz','Ağustos','Eylül','Ekim','Kasım','Aralık'];
 const DAYS = ['Pazar','Pazartesi','Salı','Çarşamba','Perşembe','Cuma','Cumartesi'];
+let MOD_TXT = {'Öncü':'Öncü nitelik baskın: işleri başlatan, yön veren birisin.','Sabit':'Sabit nitelik baskın: kararlı, dayanıklı ve sadık birisin.','Değişken':'Değişken nitelik baskın: uyum sağlayan, esnek ve çok yönlü birisin.'};
+let COMPAT_TXT = [
+  'Aynı burç: birbirinizi aynada görür gibi anlarsınız. Ortak değerler güçlü; benzer zaaflar için birbirinize alan tanımak önemli.',
+  'Komşu burçlar: farklı ritimler ama öğretici bir bağ. Birinizin güçlü olduğu yerde diğeri öğrenir.',
+  'Altmışlık uyum: dost ve destekleyici bir enerji. Sohbet akar, birlikte üretmek kolaydır.',
+  'Kare gerilimi: güçlü çekim ama farklı ihtiyaçlar. Uzlaşma becerisi bu ilişkiyi büyütür.',
+  'Aynı element: doğal ve akıcı bir uyum. Birbirinizi zahmetsizce anlar, aynı dili konuşursunuz.',
+  'Farklı dünyalar: uyum için emek gerekir; merak ve esneklikle şaşırtıcı bir tamamlayıcılık doğabilir.',
+  'Karşıt burçlar: mıknatıs gibi bir çekim. Birbirinizde eksik olanı bulursunuz; denge kurmak anahtar.'];
+/* İngilizce içerik (i18n.js) */
+if (LANG === 'en'){
+  SIGNS.forEach((s, i) => Object.assign(s, EN.signs[i]));
+  Object.keys(EL).forEach(k => { EL[k].tr = EN.el[k]; });
+  Object.assign(EL_TEXT, EN.elText); Object.assign(PROFILE, EN.profile);
+  STYLE.splice(0, 12, ...EN.style); MOON_NEED.splice(0, 12, ...EN.moonNeed); RISING.splice(0, 12, ...EN.rising);
+  PLANETS.forEach((p, i) => Object.assign(p, EN.planets[i]));
+  HOUSES.splice(0, 12, ...EN.houses); MOON_MOOD.splice(0, 12, ...EN.moonMood);
+  ASPECTS.forEach((a, i) => Object.assign(a, EN.aspects[i]));
+  Object.assign(POOL, EN.pool);
+  COLORS.forEach((c, i) => { c[0] = EN.colors[i]; });
+  MONTHS.splice(0, 12, ...Array.from({length:12}, (_, i) => new Date(2020, i, 1).toLocaleDateString('en-US', {month:'long'})));
+  DAYS.splice(0, 7, ...Array.from({length:7}, (_, i) => new Date(2020, 0, 5 + i).toLocaleDateString('en-US', {weekday:'long'})));
+  MOD_TXT = EN.modTxt; COMPAT_TXT = EN.compat;
+}
+const dayMonth = d => LANG === 'en' ? `${MONTHS[d.getMonth()]} ${d.getDate()}` : `${d.getDate()} ${MONTHS[d.getMonth()]}`;
 
 /* Ülke → saat dilimi (çok saat dilimli ülkeler boylama göre) */
 const TZ_COUNTRY = {tr:'Europe/Istanbul',de:'Europe/Berlin',fr:'Europe/Paris',gb:'Europe/London',nl:'Europe/Amsterdam',be:'Europe/Brussels',it:'Europe/Rome',es:'Europe/Madrid',pt:'Europe/Lisbon',ch:'Europe/Zurich',at:'Europe/Vienna',se:'Europe/Stockholm',no:'Europe/Oslo',dk:'Europe/Copenhagen',fi:'Europe/Helsinki',pl:'Europe/Warsaw',cz:'Europe/Prague',sk:'Europe/Bratislava',gr:'Europe/Athens',bg:'Europe/Sofia',ro:'Europe/Bucharest',md:'Europe/Chisinau',ua:'Europe/Kyiv',hu:'Europe/Budapest',rs:'Europe/Belgrade',ba:'Europe/Sarajevo',mk:'Europe/Skopje',al:'Europe/Tirane',xk:'Europe/Belgrade',me:'Europe/Podgorica',hr:'Europe/Zagreb',si:'Europe/Ljubljana',ie:'Europe/Dublin',lu:'Europe/Luxembourg',cy:'Asia/Nicosia',az:'Asia/Baku',ge:'Asia/Tbilisi',am:'Asia/Yerevan',ir:'Asia/Tehran',iq:'Asia/Baghdad',sy:'Asia/Damascus',lb:'Asia/Beirut',il:'Asia/Jerusalem',jo:'Asia/Amman',sa:'Asia/Riyadh',ae:'Asia/Dubai',qa:'Asia/Qatar',kw:'Asia/Kuwait',bh:'Asia/Bahrain',om:'Asia/Muscat',eg:'Africa/Cairo',ly:'Africa/Tripoli',tn:'Africa/Tunis',dz:'Africa/Algiers',ma:'Africa/Casablanca',in:'Asia/Kolkata',pk:'Asia/Karachi',af:'Asia/Kabul',uz:'Asia/Tashkent',tm:'Asia/Ashgabat',kg:'Asia/Bishkek',tj:'Asia/Dushanbe',kz:'Asia/Almaty',cn:'Asia/Shanghai',jp:'Asia/Tokyo',kr:'Asia/Seoul',th:'Asia/Bangkok',sg:'Asia/Singapore',my:'Asia/Kuala_Lumpur',id:'Asia/Jakarta',ph:'Asia/Manila',vn:'Asia/Ho_Chi_Minh',za:'Africa/Johannesburg',ng:'Africa/Lagos',ke:'Africa/Nairobi',et:'Africa/Addis_Ababa',ar:'America/Argentina/Buenos_Aires',cl:'America/Santiago',co:'America/Bogota',pe:'America/Lima',ve:'America/Caracas',nz:'Pacific/Auckland',is:'Atlantic/Reykjavik',ee:'Europe/Tallinn',lv:'Europe/Riga',lt:'Europe/Vilnius',by:'Europe/Minsk'};
@@ -565,7 +591,9 @@ const store = {
 };
 const toast = msg => { const t = $('#toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(toast._t); toast._t = setTimeout(() => t.classList.remove('show'), 2400); };
 const hasAstro = () => typeof Astronomy !== 'undefined';
-const fmtDate = d => `${d.getDate()} ${MONTHS[d.getMonth()]} ${d.getFullYear()}`;
+const SHARE_URL = 'https://play.google.com/store/apps/details?id=com.dogankku.astrolos';
+const nativePlugin = name => { try { const C = window.Capacitor; return C && C.isNativePlatform && C.isNativePlatform() && C.Plugins && C.Plugins[name] ? C.Plugins[name] : null; } catch { return null; } };
+const fmtDate = d => LANG === 'en' ? `${MONTHS[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}` : `${d.getDate()} ${MONTHS[d.getMonth()]} ${d.getFullYear()}`;
 
 /* Saat dilimi doğru dönüşüm (tarihsel yaz saati dahil) */
 function tzOffsetMs(tz, date){
@@ -660,7 +688,7 @@ function moonSvg(phaseDeg, size=56){
     <path d="${lit}" fill="url(#mg${size})"/></svg>`;
 }
 function moonPhaseName(ph){
-  const n = ['Yeni Ay','Büyüyen Hilal','İlk Dördün','Büyüyen Şişkin Ay','Dolunay','Küçülen Şişkin Ay','Son Dördün','Küçülen Hilal'];
+  const n = t('phases');
   return n[Math.floor(norm(ph + 22.5) / 45) % 8];
 }
 function heroRing(){
@@ -685,7 +713,7 @@ function wheelSvg(ch){
   const col = v => css.getPropertyValue(v).trim();
   const ink = col('--ink'), ink3 = col('--ink3'), line = col('--line'), gold = col('--gold');
   const elc = {fire:col('--fire'), earth:col('--earth'), air:col('--air'), water:col('--water')};
-  let s = `<svg viewBox="0 0 ${S} ${S}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Doğum haritası çarkı" font-family="Manrope, sans-serif">`;
+  let s = `<svg viewBox="0 0 ${S} ${S}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="${t('wheelAria')}" font-family="Manrope, sans-serif">`;
   s += `<circle cx="${C}" cy="${C}" r="${R1}" fill="none" stroke="${ink3}" stroke-opacity=".6"/>`;
   // burç dilimleri
   for (let i = 0; i < 12; i++){
@@ -768,7 +796,7 @@ function computeSky(){
   const illum = Astronomy.Illumination(Astronomy.Body.Moon, now).phase_fraction;
   const nextFull = Astronomy.SearchMoonPhase(180, now, 40).date;
   const nextNew = Astronomy.SearchMoonPhase(0, now, 40).date;
-  const nextEvent = nextFull < nextNew ? {name:'Dolunay', date:nextFull} : {name:'Yeni Ay', date:nextNew};
+  const nextEvent = nextFull < nextNew ? {name:t('fullMoon'), date:nextFull} : {name:t('newMoon'), date:nextNew};
   nextEvent.sign = signIdx(bodyLon('Moon', nextEvent.date));
   return {now, pl, phase, illum, nextEvent, moon: pl[1], sun: pl[0], retro: pl.filter(p => p.retro)};
 }
@@ -778,29 +806,29 @@ function renderHome(){
   $('#todayLabel').textContent = `${DAYS[now.getDay()]}, ${fmtDate(now)}`;
   heroRing();
   const sky = state.sky;
-  $('#heroMoon').innerHTML = sky ? `${moonSvg(sky.phase, 110)}<div style="margin-top:8px;font-family:var(--font-d);font-size:1.05rem">${moonPhaseName(sky.phase)}</div><div class="muted" style="font-size:.82rem">Ay ${SIGNS[sky.moon.sign].loc}</div>` : '';
+  $('#heroMoon').innerHTML = sky ? `${moonSvg(sky.phase, 110)}<div style="margin-top:8px;font-family:var(--font-d);font-size:1.05rem">${moonPhaseName(sky.phase)}</div><div class="muted" style="font-size:.82rem">${t('moonIn',{loc:SIGNS[sky.moon.sign].loc})}</div>` : '';
   if (sky){
-    $('#skyTime').textContent = `Güncelleme: ${now.toLocaleTimeString('tr-TR',{hour:'2-digit',minute:'2-digit'})}`;
+    $('#skyTime').textContent = t('updated', {t: now.toLocaleTimeString(LOCALE,{hour:'2-digit',minute:'2-digit'})});
     const ne = sky.nextEvent; const days = Math.max(0, Math.round((ne.date - now) / 86400000));
     $('#skyCards').innerHTML = `
-      <div class="card sky-card"><span class="label">Ay evresi</span>${moonSvg(sky.phase)}<span class="val">${moonPhaseName(sky.phase)}</span><span class="sub">%${Math.round(sky.illum*100)} aydınlık</span></div>
-      <div class="card sky-card"><span class="label">Ay burcu</span><span class="val">${g(SIGNS[sky.moon.sign].g)} ${SIGNS[sky.moon.sign].tr}</span><span class="sub">${MOON_MOOD[sky.moon.sign]}</span></div>
-      <div class="card sky-card"><span class="label">Güneş</span><span class="val">${g(SIGNS[sky.sun.sign].g)} ${SIGNS[sky.sun.sign].tr} ${fmtDeg(sky.sun.lon)}</span><span class="sub">Güneş ${SIGNS[sky.sun.sign].loc}: ${STYLE[sky.sun.sign].split(',')[0]} bir dönem.</span></div>
-      <div class="card sky-card"><span class="label">Retro gezegenler</span><span class="val" style="font-size:1.15rem">${sky.retro.length ? sky.retro.map(p => `<span class="pill r">${g(p.g)} ${p.tr} ℞</span>`).join(' ') : 'Retro yok ✦'}</span><span class="sub">Sonraki ${ne.name}: ${ne.date.getDate()} ${MONTHS[ne.date.getMonth()]} (${days === 0 ? 'bugün' : days + ' gün'}), ${SIGNS[ne.sign].loc}</span></div>`;
+      <div class="card sky-card"><span class="label">${t('moonPhase')}</span>${moonSvg(sky.phase)}<span class="val">${moonPhaseName(sky.phase)}</span><span class="sub">${t('illuminated',{p:pct(Math.round(sky.illum*100))})}</span></div>
+      <div class="card sky-card"><span class="label">${t('moonSign')}</span><span class="val">${g(SIGNS[sky.moon.sign].g)} ${SIGNS[sky.moon.sign].tr}</span><span class="sub">${MOON_MOOD[sky.moon.sign]}</span></div>
+      <div class="card sky-card"><span class="label">${t('sun')}</span><span class="val">${g(SIGNS[sky.sun.sign].g)} ${SIGNS[sky.sun.sign].tr} ${fmtDeg(sky.sun.lon)}</span><span class="sub">${t('sunPeriod',{loc:SIGNS[sky.sun.sign].loc, s:STYLE[sky.sun.sign].split(',')[0]})}</span></div>
+      <div class="card sky-card"><span class="label">${t('retroPlanets')}</span><span class="val" style="font-size:1.15rem">${sky.retro.length ? sky.retro.map(p => `<span class="pill r">${g(p.g)} ${p.tr} ℞</span>`).join(' ') : t('noRetro')}</span><span class="sub">${t('nextEvent',{ev:ne.name, date:dayMonth(ne.date), days: days === 0 ? t('today') : t('inDays',{n:days}), loc:SIGNS[ne.sign].loc})}</span></div>`;
   } else {
-    $('#skyCards').innerHTML = `<div class="card" style="grid-column:1/-1">Gökyüzü verileri yüklenemedi. İnternet bağlantını kontrol edip sayfayı yenile.</div>`;
+    $('#skyCards').innerHTML = `<div class="card" style="grid-column:1/-1">${t('skyFail')}</div>`;
   }
-  $('#homeZodiac').innerHTML = SIGNS.map(s => `<a class="zbtn el-${s.el}" href="#burclar/${s.id}">${g(s.g)}<b>${s.tr}</b><small>${s.dates.split(' – ').map(x => { const [d, m] = x.split(' '); return d + ' ' + m.slice(0,3); }).join(' – ')}</small></a>`).join('');
+  $('#homeZodiac').innerHTML = SIGNS.map(s => `<a class="zbtn el-${s.el}" href="#burclar/${s.id}">${g(s.g)}<b>${s.tr}</b><small>${s.short || s.dates.split(' – ').map(x => { const [d, m] = x.split(' '); return d + ' ' + m.slice(0,3); }).join(' – ')}</small></a>`).join('');
   // kişisel banner
   const me = mainProfile();
   if (me && sky){
     const sunS = me.sun, moonS = me.moon, h = ((sky.moon.sign - sunS + 12) % 12) + 1;
     const hor = horoscope(sunS, 'day');
     $('#meBanner').innerHTML = `<div class="card me-banner"><div class="big-glyph glyph">${SIGNS[sunS].g}${VS}</div>
-      <div><div class="eyebrow">Merhaba ${esc(me.name)} ✦ bugün senin için</div>
+      <div><div class="eyebrow">${t('hello',{name:esc(me.name)})}</div>
       <p style="margin:6px 0 4px;font-family:var(--font-d);font-size:1.15rem">${hor.main}</p>
-      <div class="muted" style="font-size:.9rem">Ay bugün ${SIGNS[sky.moon.sign].loc}; senin için ${h}. evi, yani ${HOUSES[h-1]} alanını aydınlatıyor.${moonS!=null?` · Ay burcun ${SIGNS[moonS].tr}`:''}</div></div>
-      <a class="btn small" href="#burclar/${SIGNS[sunS].id}">Tam yorum →</a></div>`;
+      <div class="muted" style="font-size:.9rem">${t('bannerMoon',{loc:SIGNS[sky.moon.sign].loc, ord:ord(h), house:HOUSES[h-1]})}${moonS!=null ? t('yourMoonSign',{s:SIGNS[moonS].tr}) : ''}</div></div>
+      <a class="btn small" href="#burclar/${SIGNS[sunS].id}">${t('fullReading')}</a></div>`;
   } else {
     $('#meBanner').innerHTML = '';
   }
@@ -819,6 +847,7 @@ function periodLabel(period, d=new Date()){
   if (period === 'day') return `${DAYS[d.getDay()]}, ${fmtDate(d)}`;
   if (period === 'month') return `${MONTHS[d.getMonth()]} ${d.getFullYear()}`;
   const s = new Date(d); s.setDate(s.getDate() - ((s.getDay() + 6) % 7)); const e = new Date(s); e.setDate(e.getDate() + 6);
+  if (LANG === 'en') return s.getMonth() === e.getMonth() ? `${MONTHS[s.getMonth()]} ${s.getDate()}–${e.getDate()}` : `${dayMonth(s)} – ${dayMonth(e)}`;
   return s.getMonth() === e.getMonth() ? `${s.getDate()}–${e.getDate()} ${MONTHS[s.getMonth()]}` : `${s.getDate()} ${MONTHS[s.getMonth()]} – ${e.getDate()} ${MONTHS[e.getMonth()]}`;
 }
 function horoscope(si, period){
@@ -827,18 +856,17 @@ function horoscope(si, period){
   const focus = pick(POOL.focus, h('f'));
   const love = pick(POOL.love, h('l')), work = pick(POOL.work, h('w')), well = pick(POOL.well, h('h'));
   const sc = n => 2 + (h(n) % 4); // 2..5
-  const word = period === 'day' ? 'Günün' : period === 'week' ? 'Haftanın' : 'Ayın';
-  const main = `${word} teması <em style="color:var(--gold)">${focus}</em>. ${SIGNS[si].tr} burcunun ${STYLE[si].replace(' ve ', ' ve ')} enerjisi, ${pick(['dengeyi bulduğunda','sabırla yönlendirildiğinde','net hedeflere odaklandığında','sezgilerini dinlediğinde','başkalarıyla paylaşıldığında'], h('m'))} ${pick(['beklenmedik kapılar açabilir.','sana iyi gelecek fırsatlar getirebilir.','ilişkilerine taze bir soluk katabilir.','uzun süredir beklediğin netliği getirebilir.','seni bir adım öne taşıyabilir.'], h('n'))}`;
+  const main = t('horoMain', {word: t('word_' + period), focus, sign: SIGNS[si].tr, style: STYLE[si], when: pick(t('when'), h('m')), result: pick(t('result'), h('n'))});
   return {focus, love, work, well, s:{love:sc('sl'), work:sc('sw'), well:sc('sh')}, main, color: pick(COLORS, h('c')), num: 1 + h('u') % 99};
 }
-const starStr = n => `<span class="stars" aria-label="5 üzerinden ${n}">${'★'.repeat(n)}<span class="off">${'★'.repeat(5-n)}</span></span>`;
+const starStr = n => `<span class="stars" aria-label="${t('starsAria',{n})}">${'★'.repeat(n)}<span class="off">${'★'.repeat(5-n)}</span></span>`;
 function renderHoroscope(){
   const si = state.sign, s = SIGNS[si];
   $('#signChips').innerHTML = SIGNS.map((x, i) => `<button class="chip" aria-pressed="${i===si}" data-sign="${i}">${g(x.g)} ${x.tr}</button>`).join('');
   const act = $('#signChips [aria-pressed="true"]'); act && act.scrollIntoView({block:'nearest', inline:'center'});
   $('#shGlyph').innerHTML = `${s.g}${VS}`; $('#shGlyph').style.color = EL[s.el].c;
   $('#shName').textContent = s.tr; $('#shDates').textContent = s.dates;
-  $('#shMeta').innerHTML = `<span class="pill">${EL[s.el].tr} elementi</span><span class="pill">${s.mod}</span><span class="pill">Yönetici: ${s.ruler}</span>`;
+  $('#shMeta').innerHTML = `<span class="pill">${t('element',{e:EL[s.el].tr})}</span><span class="pill">${s.mod}</span><span class="pill">${t('ruler',{r:s.ruler})}</span>`;
   $$('.tab').forEach(t => t.setAttribute('aria-selected', t.dataset.period === state.period));
   const h = horoscope(si, state.period);
   $('#hPeriodLabel').textContent = periodLabel(state.period);
@@ -846,17 +874,17 @@ function renderHoroscope(){
   const sky = state.sky;
   if (sky && state.period === 'day'){
     const hs = ((sky.moon.sign - si + 12) % 12) + 1;
-    $('#hMoon').innerHTML = `${g('☽')} Ay bugün ${SIGNS[sky.moon.sign].loc}: ${s.tr} için ${hs}. ev, yani <b>${HOUSES[hs-1]}</b> gündemde.`;
+    $('#hMoon').innerHTML = `${g('☽')} ${t('horoMoon',{loc:SIGNS[sky.moon.sign].loc, sign:s.tr, ord:ord(hs), house:HOUSES[hs-1]})}`;
   } else $('#hMoon').textContent = '';
-  $('#hCats').innerHTML = [['♡ Aşk', h.love, h.s.love], ['◆ Kariyer', h.work, h.s.work], ['✿ Sağlık ve enerji', h.well, h.s.well]]
+  $('#hCats').innerHTML = [[t('catLove'), h.love, h.s.love], [t('catWork'), h.work, h.s.work], [t('catWell'), h.well, h.s.well]]
     .map(([t, txt, n]) => `<div class="card cat"><div class="cat-head"><b>${t}</b>${starStr(n)}</div><p>${txt}</p></div>`).join('');
-  $('#hLucky').innerHTML = `<div><span>Odak</span><b>${h.focus}</b></div><div><span>Şanslı renk</span><b><i class="swatch" style="background:${h.color[1]}"></i>${h.color[0]}</b></div><div><span>Şanslı sayı</span><b>${h.num}</b></div><div><span>Uyumlu burç</span><b>${g(SIGNS[(si+4+ (hash(periodKey(state.period)+si)%2)*4)%12].g)} ${SIGNS[(si+4+(hash(periodKey(state.period)+si)%2)*4)%12].tr}</b></div>`;
+  $('#hLucky').innerHTML = `<div><span>${t('focus')}</span><b>${h.focus}</b></div><div><span>${t('luckyColor')}</span><b><i class="swatch" style="background:${h.color[1]}"></i>${h.color[0]}</b></div><div><span>${t('luckyNum')}</span><b>${h.num}</b></div><div><span>${t('compatSign')}</span><b>${g(SIGNS[(si+4+ (hash(periodKey(state.period)+si)%2)*4)%12].g)} ${SIGNS[(si+4+(hash(periodKey(state.period)+si)%2)*4)%12].tr}</b></div>`;
   const p = PROFILE[s.id];
   $('#spDesc').textContent = p.d;
   $('#spStr').innerHTML = p.s.map(x => `<span>${x}</span>`).join('');
   $('#spWeak').innerHTML = p.w.map(x => `<span>${x}</span>`).join('');
   const comp = [ (si+4)%12, (si+8)%12, (si+2)%12 ];
-  $('#spCompat').innerHTML = comp.map(i => `<a class="zbtn el-${SIGNS[i].el}" href="#burclar/${SIGNS[i].id}">${g(SIGNS[i].g)}<b>${SIGNS[i].tr}</b><small>%${signCompat(si, i).score}</small></a>`).join('');
+  $('#spCompat').innerHTML = comp.map(i => `<a class="zbtn el-${SIGNS[i].el}" href="#burclar/${SIGNS[i].id}">${g(SIGNS[i].g)}<b>${SIGNS[i].tr}</b><small>${pct(signCompat(si, i).score)}</small></a>`).join('');
 }
 
 /* =========================================================
@@ -878,8 +906,8 @@ function cityInput(prefix, onPick){
     timer = setTimeout(async () => {
       try {
         ctrl && ctrl.abort(); ctrl = new AbortController();
-        dd.innerHTML = '<button disabled>Aranıyor…</button>'; dd.classList.add('open');
-        const r = await fetch(`https://nominatim.openstreetmap.org/search?format=json&addressdetails=1&limit=6&accept-language=tr&q=${encodeURIComponent(q)}`, {signal: ctrl.signal});
+        dd.innerHTML = `<button disabled>${t('searching')}</button>`; dd.classList.add('open');
+        const r = await fetch(`https://nominatim.openstreetmap.org/search?format=json&addressdetails=1&limit=6&accept-language=${LANG}&q=${encodeURIComponent(q)}`, {signal: ctrl.signal});
         const data = await r.json();
         items = data.filter(d => ['city','town','village','administrative','municipality','suburb','hamlet','province','state'].includes(d.addresstype || d.type) || d.class === 'place' || d.class === 'boundary').map(d => {
           const a = d.address || {};
@@ -887,10 +915,10 @@ function cityInput(prefix, onPick){
           const region = [a.province || a.state, a.country].filter(x => x && x !== name).join(', ');
           return {short: name + (a.country ? ', ' + a.country : ''), name, region, lat: +d.lat, lon: +d.lon, cc: a.country_code};
         });
-        if (!items.length){ dd.innerHTML = '<button disabled>Sonuç bulunamadı</button>'; return; }
+        if (!items.length){ dd.innerHTML = `<button disabled>${t('noResults')}</button>`; return; }
         dd.innerHTML = items.map((it, i) => `<button type="button" role="option" data-i="${i}">${esc(it.name)}<small>${esc(it.region)}</small></button>`).join('');
         inp.setAttribute('aria-expanded','true');
-      } catch (e) { if (e.name !== 'AbortError') dd.innerHTML = '<button disabled>Arama yapılamadı, bağlantını kontrol et</button>'; }
+      } catch (e) { if (e.name !== 'AbortError') dd.innerHTML = `<button disabled>${t('searchFail')}</button>`; }
     }, 380);
   });
   dd.addEventListener('mousedown', e => { const b = e.target.closest('[data-i]'); if (b){ e.preventDefault(); choose(items[+b.dataset.i]); } });
@@ -917,26 +945,26 @@ function fillTzSelect(sel, value){
 function readNatal(){
   const noTime = $('#nNoTime').checked;
   const lat = parseFloat($('#nLat').value), lon = parseFloat($('#nLon').value);
-  return {name: $('#nName').value.trim() || 'Ben', date: $('#nDate').value, time: $('#nTime').value, noTime,
+  return {name: $('#nName').value.trim() || t('me'), date: $('#nDate').value, time: $('#nTime').value, noTime,
     city: natalLoc.city || $('#nCity').value.trim(), lat, lon, tz: $('#nTz').value, house: $('#nHouse').value, zodiac: $('#nZodiac').value};
 }
 function validate(inp){
-  if (!hasAstro()) return 'Hesaplama kütüphanesi yüklenemedi. Sayfayı yenilemeyi dene.';
-  if (!inp.date) return 'Lütfen doğum tarihini gir.';
-  const y = +inp.date.slice(0,4); if (y < 1800 || y > 2200) return 'Doğum yılı 1800–2200 arasında olmalı.';
-  if (!inp.noTime && !inp.time) return 'Doğum saatini gir ya da “bilmiyorum” kutusunu işaretle.';
-  if (!inp.noTime && (isNaN(inp.lat) || isNaN(inp.lon))) return 'Listeden bir doğum yeri seç (yükselen burç için gerekli).';
-  if (zonedToUtc(inp.date, inp.time, inp.tz) > new Date()) return 'Doğum tarihi gelecekte olamaz.';
+  if (!hasAstro()) return t('errLib');
+  if (!inp.date) return t('errDate');
+  const y = +inp.date.slice(0,4); if (y < 1800 || y > 2200) return t('errYear');
+  if (!inp.noTime && !inp.time) return t('errTime');
+  if (!inp.noTime && (isNaN(inp.lat) || isNaN(inp.lon))) return t('errPlace');
+  if (zonedToUtc(inp.date, inp.time, inp.tz) > new Date()) return t('errFuture');
   return null;
 }
 function interpretPlanet(p, ch){
-  let t = `${p.topic} ${STYLE[p.sign]} bir tarzda ortaya çıkar.`;
-  if (p.k === 'Sun') t = `${PROFILE[SIGNS[p.sign].id].d}`;
-  if (p.k === 'Moon') t = `${MOON_NEED[p.sign]}`;
-  if (p.house) t += ` Bu enerji en çok <b>${HOUSES[p.house-1]}</b> alanında hissedilir.`;
-  if (p.retro) t += ' Retro konumda olduğu için bu enerji daha içe dönük ve yeniden değerlendirme odaklı çalışır.';
-  if (['Uranus','Neptune','Pluto'].includes(p.k)) t += ' (Kuşak gezegeni: yaşıtlarınla paylaştığın bir tema.)';
-  return t;
+  let x = t('planetTxt', {topic: p.topic, style: STYLE[p.sign]});
+  if (p.k === 'Sun') x = `${PROFILE[SIGNS[p.sign].id].d}`;
+  if (p.k === 'Moon') x = `${MOON_NEED[p.sign]}`;
+  if (p.house) x += t('planetHouse', {house: HOUSES[p.house-1]});
+  if (p.retro) x += t('planetRetro');
+  if (['Uranus','Neptune','Pluto'].includes(p.k)) x += t('planetGen');
+  return x;
 }
 function renderNatal(ch){
   state.lastChart = ch;
@@ -945,48 +973,49 @@ function renderNatal(ch){
   const ascS = ch.asc != null ? signIdx(ch.asc) : null;
   // element & nitelik
   const wts = {Sun:2,Moon:2,Mercury:1.5,Venus:1.5,Mars:1.5,Jupiter:1,Saturn:1,Uranus:.5,Neptune:.5,Pluto:.5};
-  const els = {fire:0,earth:0,air:0,water:0}, mods = {'Öncü':0,'Sabit':0,'Değişken':0};
-  planets.forEach(p => { els[SIGNS[p.sign].el] += wts[p.k]; mods[SIGNS[p.sign].mod] += wts[p.k]; });
-  if (ascS != null){ els[SIGNS[ascS].el] += 2; mods[SIGNS[ascS].mod] += 2; }
+  const els = {fire:0,earth:0,air:0,water:0}, mods = {};
+  const addMod = (m, w) => { mods[m] = (mods[m] || 0) + w; };
+  planets.forEach(p => { els[SIGNS[p.sign].el] += wts[p.k]; addMod(SIGNS[p.sign].mod, wts[p.k]); });
+  if (ascS != null){ els[SIGNS[ascS].el] += 2; addMod(SIGNS[ascS].mod, 2); }
   const tot = Object.values(els).reduce((a, b) => a + b, 0);
   const domEl = Object.entries(els).sort((a, b) => b[1] - a[1])[0][0];
   const domMod = Object.entries(mods).sort((a, b) => b[1] - a[1])[0][0];
-  const modTxt = {'Öncü':'Öncü nitelik baskın: işleri başlatan, yön veren birisin.','Sabit':'Sabit nitelik baskın: kararlı, dayanıklı ve sadık birisin.','Değişken':'Değişken nitelik baskın: uyum sağlayan, esnek ve çok yönlü birisin.'};
+  const modTxt = MOD_TXT;
   const dt = new Date(input.date + 'T00:00');
   const top = ch.aspects.slice(0, 8);
   $('#natalOut').innerHTML = `
   <div class="grid" style="gap:16px">
     <div class="card">
-      <div class="sec-head" style="margin-bottom:8px"><div><div class="eyebrow">${fmtDate(dt)}${input.noTime ? '' : ' · ' + input.time} · ${esc(input.city || '')}</div><h2 style="font-size:1.8rem">${esc(input.name)} · Doğum Haritası</h2></div></div>
-      ${input.noTime ? '<p class="note">Doğum saati bilinmediği için öğlen 12:00 esas alındı; yükselen burç ve evler hesaplanmadı. Ay o gün burç değiştirdiyse Ay burcun farklı olabilir.</p>' : ''}
+      <div class="sec-head" style="margin-bottom:8px"><div><div class="eyebrow">${fmtDate(dt)}${input.noTime ? '' : ' · ' + input.time} · ${esc(input.city || '')}</div><h2 style="font-size:1.8rem">${t('chartTitle',{name:esc(input.name)})}</h2></div></div>
+      ${input.noTime ? `<p class="note">${t('noTimeNote')}</p>` : ''}
       <div class="big3" style="margin-top:12px">
-        <div class="b3"><div class="k">Güneş burcu</div><div class="v">${g(SIGNS[sun.sign].g)} ${SIGNS[sun.sign].tr}</div><p>Özün ve yaşam amacın. ${STYLE[sun.sign][0].toUpperCase()+STYLE[sun.sign].slice(1)}.</p></div>
-        <div class="b3"><div class="k">Ay burcu</div><div class="v">${g(SIGNS[moon.sign].g)} ${SIGNS[moon.sign].tr}</div><p>${MOON_NEED[moon.sign]}</p></div>
-        <div class="b3"><div class="k">Yükselen</div><div class="v">${ascS != null ? g(SIGNS[ascS].g) + ' ' + SIGNS[ascS].tr : '—'}</div><p>${ascS != null ? RISING[ascS] : 'Yükseleni öğrenmek için doğum saatini gir.'}</p></div>
+        <div class="b3"><div class="k">${t('sunSign')}</div><div class="v">${g(SIGNS[sun.sign].g)} ${SIGNS[sun.sign].tr}</div><p>${t('coreSelf',{s:cap(STYLE[sun.sign])})}</p></div>
+        <div class="b3"><div class="k">${t('moonSign')}</div><div class="v">${g(SIGNS[moon.sign].g)} ${SIGNS[moon.sign].tr}</div><p>${MOON_NEED[moon.sign]}</p></div>
+        <div class="b3"><div class="k">${t('rising')}</div><div class="v">${ascS != null ? g(SIGNS[ascS].g) + ' ' + SIGNS[ascS].tr : '—'}</div><p>${ascS != null ? RISING[ascS] : t('risingMissing')}</p></div>
       </div>
     </div>
     <div class="card wheel-box" id="wheelBox">${wheelSvg(ch)}</div>
     <div class="grid">
       <div class="card">
-        <h3 style="font-size:1.25rem;margin-bottom:12px">Element dengesi</h3>
-        <div class="bars">${Object.entries(els).map(([k, v]) => `<div class="bar"><span>${EL[k].tr}</span><div class="track"><div class="fill" style="width:${Math.round(v/tot*100)}%;background:${EL[k].c}"></div></div><span>%${Math.round(v/tot*100)}</span></div>`).join('')}</div>
+        <h3 style="font-size:1.25rem;margin-bottom:12px">${t('elBalance')}</h3>
+        <div class="bars">${Object.entries(els).map(([k, v]) => `<div class="bar"><span>${EL[k].tr}</span><div class="track"><div class="fill" style="width:${Math.round(v/tot*100)}%;background:${EL[k].c}"></div></div><span>${pct(Math.round(v/tot*100))}</span></div>`).join('')}</div>
         <p style="color:var(--ink2);margin:16px 0 6px">${EL_TEXT[domEl]}</p>
         <p class="muted" style="margin:0">${modTxt[domMod]}</p>
         <div class="actions" style="margin-top:18px">
-          <button class="btn small primary" id="saveChart">★ Haritamı kaydet</button>
-          <button class="btn small" id="shareChart">Paylaş</button>
-          <button class="btn small" id="dlChart">PNG indir</button>
+          <button class="btn small primary" id="saveChart">${t('saveChart')}</button>
+          <button class="btn small" id="shareChart">${t('share')}</button>
+          <button class="btn small" id="dlChart">${t('downloadPng')}</button>
         </div>
       </div>
     </div>
     <div class="card">
-      <h3 style="font-size:1.4rem;margin-bottom:14px">Gezegenlerin</h3>
-      <div class="planet-list">${planets.map(p => `<div class="pl"><div class="pg glyph">${p.g}${VS}</div><div><div class="t">${p.tr} ${SIGNS[p.sign].loc} <span class="deg">${fmtDeg(p.lon)}${p.house ? ' · ' + p.house + '. ev' : ''}</span>${p.retro ? '<span class="pill r">℞ Retro</span>' : ''}</div><p>${interpretPlanet(p, ch)}</p></div></div>`).join('')}</div>
+      <h3 style="font-size:1.4rem;margin-bottom:14px">${t('yourPlanets')}</h3>
+      <div class="planet-list">${planets.map(p => `<div class="pl"><div class="pg glyph">${p.g}${VS}</div><div><div class="t">${p.tr} ${SIGNS[p.sign].loc} <span class="deg">${fmtDeg(p.lon)}${p.house ? ' · ' + t('houseN',{n:p.house}) : ''}</span>${p.retro ? '<span class="pill r">℞ Retro</span>' : ''}</div><p>${interpretPlanet(p, ch)}</p></div></div>`).join('')}</div>
     </div>
     <div class="card">
-      <h3 style="font-size:1.4rem;margin-bottom:6px">Öne çıkan açılar</h3>
-      <p class="muted" style="margin:0 0 6px">Gezegenler arasındaki en güçlü (en dar) ilişkiler</p>
-      ${top.length ? top.map(a => `<div class="asp"><div class="sym ${a.n} glyph">${a.sym}${VS}</div><div><b>${a.p1.tr} ${a.tr.toLowerCase()} ${a.p2.tr} <span class="muted" style="font-weight:500">· ${a.exact.toFixed(1)}° orb</span></b><p>${a.p1.short[0].toUpperCase()+a.p1.short.slice(1)} ve ${a.p2.short} arasında ${a.tr.toLowerCase()}: ${a.d}</p></div></div>`).join('') : '<p class="muted">Belirgin açı bulunamadı.</p>'}
+      <h3 style="font-size:1.4rem;margin-bottom:6px">${t('keyAspects')}</h3>
+      <p class="muted" style="margin:0 0 6px">${t('keyAspectsSub')}</p>
+      ${top.length ? top.map(a => `<div class="asp"><div class="sym ${a.n} glyph">${a.sym}${VS}</div><div><b>${a.p1.tr} ${a.tr.toLocaleLowerCase(LOCALE)} ${a.p2.tr} <span class="muted" style="font-weight:500">· ${a.exact.toFixed(1)}° orb</span></b><p>${cap(t('aspLine',{a:a.p1.short, b:a.p2.short, asp:a.tr.toLocaleLowerCase(LOCALE), d:a.d}))}</p></div></div>`).join('') : `<p class="muted">${t('noAspects')}</p>`}
     </div>
   </div>`;
   $('#saveChart').onclick = () => saveChart(ch);
@@ -1004,16 +1033,18 @@ function saveChart(ch){
   const list = store.get('asteria.charts', []).filter(c => c.id !== rec.id);
   rec.main = !list.some(c => c.main);
   list.unshift(rec); store.set('asteria.charts', list);
-  toast(rec.main ? 'Kaydedildi ve ana profilin yapıldı ✦' : 'Harita kaydedildi ✦');
+  toast(rec.main ? t('savedMain') : t('saved'));
   renderHome();
 }
 async function shareChart(ch){
-  const p = ch.planets, asc = ch.asc != null ? ` · Yükselen ${SIGNS[signIdx(ch.asc)].tr}` : '';
-  const text = `Doğum haritam ✦ Güneş ${SIGNS[p[0].sign].tr} · Ay ${SIGNS[p[1].sign].tr}${asc}. Seninkini de çıkar:`;
-  const url = location.origin + location.pathname;
+  const p = ch.planets, asc = ch.asc != null ? ` · ${t('rising')} ${SIGNS[signIdx(ch.asc)].tr}` : '';
+  const text = t('shareText', {sun: SIGNS[p[0].sign].tr, moon: SIGNS[p[1].sign].tr, asc});
+  const url = SHARE_URL;
   try {
-    if (navigator.share) await navigator.share({title:'Asteria doğum haritam', text, url});
-    else { await navigator.clipboard.writeText(`${text} ${url}`); toast('Paylaşım metni kopyalandı'); }
+    const NS = nativePlugin('Share');
+    if (NS) await NS.share({title: t('shareTitle'), text, url, dialogTitle: t('share')});
+    else if (navigator.share) await navigator.share({title: t('shareTitle'), text, url});
+    else { await navigator.clipboard.writeText(`${text} ${url}`); toast(t('copied')); }
   } catch {}
 }
 function downloadPng(ch){
@@ -1027,11 +1058,20 @@ function downloadPng(ch){
     x.drawImage(img, 0, 0, 1200, 1200);
     x.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--gold').trim();
     x.font = '600 40px Fraunces, Georgia, serif'; x.textAlign = 'center';
-    const p = ch.planets; const asc = ch.asc != null ? `  ·  Yükselen ${SIGNS[signIdx(ch.asc)].tr}` : '';
-    x.fillText(`${ch.input.name}  ·  Güneş ${SIGNS[p[0].sign].tr}  ·  Ay ${SIGNS[p[1].sign].tr}${asc}`, 600, 1270);
-    const a = document.createElement('a'); a.download = `dogum-haritasi-${(ch.input.name||'').toLowerCase().replace(/\s+/g,'-')}.png`; a.href = c.toDataURL('image/png'); a.click();
+    const p = ch.planets; const asc = ch.asc != null ? `  ·  ${t('rising')} ${SIGNS[signIdx(ch.asc)].tr}` : '';
+    x.fillText(`${ch.input.name}  ·  ${t('sun')} ${SIGNS[p[0].sign].tr}  ·  ${t('moon')} ${SIGNS[p[1].sign].tr}${asc}`, 600, 1270);
+    const fname = `${t('filePrefix')}-${(ch.input.name||'').toLowerCase().replace(/[^a-z0-9ğüşıöç]+/gi,'-')}.png`;
+    const dataUrl = c.toDataURL('image/png');
+    const FS = nativePlugin('Filesystem'), NS = nativePlugin('Share');
+    if (FS && NS){
+      FS.writeFile({path: fname, data: dataUrl.split(',')[1], directory: 'CACHE'})
+        .then(res => NS.share({title: t('shareTitle'), files: [res.uri], dialogTitle: t('share')}))
+        .catch(() => toast(t('imgFail')));
+      return;
+    }
+    const a = document.createElement('a'); a.download = fname; a.href = dataUrl; a.click();
   };
-  img.onerror = () => toast('Görsel oluşturulamadı');
+  img.onerror = () => toast(t('imgFail'));
   img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(xml);
 }
 function loadIntoForm(rec){
@@ -1053,10 +1093,10 @@ function initNatal(){
     e.preventDefault();
     const inp = readNatal(); const err = validate(inp);
     $('#nErr').textContent = err || ''; if (err) return;
-    try { renderNatal(computeChart(inp)); } catch (ex) { console.error(ex); $('#nErr').textContent = 'Hesaplama sırasında bir hata oluştu.'; }
+    try { renderNatal(computeChart(inp)); } catch (ex) { console.error(ex); $('#nErr').textContent = t('errCalc'); }
   });
   $('#nSample').addEventListener('click', () => {
-    loadIntoForm({name:'Örnek', date:'1992-08-14', time:'13:24', city:'İstanbul, Türkiye', lat:41.0082, lon:28.9784, tz:'Europe/Istanbul', house:'whole', zodiac:'tropical'});
+    loadIntoForm({name:t('sample'), date:'1992-08-14', time:'13:24', city:t('sampleCity'), lat:41.0082, lon:28.9784, tz:'Europe/Istanbul', house:'whole', zodiac:'tropical'});
     $('#natalForm').requestSubmit();
   });
 }
@@ -1067,14 +1107,7 @@ function initNatal(){
 function signCompat(a, b){
   const d = Math.min((a - b + 12) % 12, (b - a + 12) % 12);
   const base = [80, 58, 84, 52, 93, 48, 76][d];
-  const txt = [
-    'Aynı burç: birbirinizi aynada görür gibi anlarsınız. Ortak değerler güçlü; benzer zaaflar için birbirinize alan tanımak önemli.',
-    'Komşu burçlar: farklı ritimler ama öğretici bir bağ. Birinizin güçlü olduğu yerde diğeri öğrenir.',
-    'Altmışlık uyum: dost ve destekleyici bir enerji. Sohbet akar, birlikte üretmek kolaydır.',
-    'Kare gerilimi: güçlü çekim ama farklı ihtiyaçlar. Uzlaşma becerisi bu ilişkiyi büyütür.',
-    'Aynı element: doğal ve akıcı bir uyum. Birbirinizi zahmetsizce anlar, aynı dili konuşursunuz.',
-    'Farklı dünyalar: uyum için emek gerekir; merak ve esneklikle şaşırtıcı bir tamamlayıcılık doğabilir.',
-    'Karşıt burçlar: mıknatıs gibi bir çekim. Birbirinizde eksik olanı bulursunuz; denge kurmak anahtar.'][d];
+  const txt = COMPAT_TXT[d];
   const ea = SIGNS[a].el, eb = SIGNS[b].el;
   const bonus = (ea === eb) ? 0 : ((['fire','air'].includes(ea) && ['fire','air'].includes(eb)) || (['earth','water'].includes(ea) && ['earth','water'].includes(eb))) ? 4 : -2;
   const score = Math.max(35, Math.min(98, base + bonus + (hash(`${Math.min(a,b)}-${Math.max(a,b)}`) % 5) - 2));
@@ -1086,9 +1119,9 @@ function ringSvg(score){
 }
 function renderQuick(){
   const a = +$('#qA').value, b = +$('#qB').value, r = signCompat(a, b);
-  $('#qOut').innerHTML = `<div class="score-wrap"><div class="score-ring">${ringSvg(r.score)}<div class="num"><div>%${r.score}<small>uyum</small></div></div></div>
+  $('#qOut').innerHTML = `<div class="score-wrap"><div class="score-ring">${ringSvg(r.score)}<div class="num"><div>${pct(r.score)}<small>${t('match')}</small></div></div></div>
     <div><h3 style="font-size:1.4rem">${g(SIGNS[a].g)} ${SIGNS[a].tr} & ${g(SIGNS[b].g)} ${SIGNS[b].tr}</h3><p style="color:var(--ink2)">${r.txt}</p>
-    <p class="muted" style="margin:0;font-size:.88rem">${EL[SIGNS[a].el].tr} + ${EL[SIGNS[b].el].tr}. Daha gerçekçi bir sonuç için aşağıdaki detaylı sinastriyi dene; Ay, Venüs ve Mars konumları da hesaba katılır.</p></div></div>`;
+    <p class="muted" style="margin:0;font-size:.88rem">${t('quickNote',{a:EL[SIGNS[a].el].tr, b:EL[SIGNS[b].el].tr})}</p></div></div>`;
 }
 const synLoc = {A:{}, B:{}};
 function renderSynForms(){
@@ -1096,13 +1129,13 @@ function renderSynForms(){
   $('#synForms').dataset.ready = '1';
   const me = mainProfile();
   const form = (P, title, rec) => `<div class="card"><h3 style="font-size:1.2rem;margin-bottom:12px">${title}</h3><div class="form">
-    <label class="f">Ad<input class="inp" id="s${P}Name" value="${esc(rec?.name || '')}" placeholder="${P==='A'?'Sen':'O'}" /></label>
-    <div class="row"><label class="f">Doğum tarihi<input class="inp" id="s${P}Date" type="date" value="${rec?.date || ''}" /></label>
-    <label class="f">Doğum saati<input class="inp" id="s${P}Time" type="time" value="${rec?.time || '12:00'}" ${rec?.noTime ? 'disabled' : ''} /></label></div>
-    <label class="check"><input type="checkbox" id="s${P}NoTime" ${rec?.noTime ? 'checked' : ''} /> Saati bilmiyorum</label>
-    <label class="f">Doğum yeri<div class="city"><input class="inp" id="s${P}City" value="${esc(rec?.city || '')}" placeholder="Şehir ara…" autocomplete="off" /><div class="dropdown" id="s${P}CityDD"></div></div><span class="city-ok" id="s${P}CityOk">${rec?.lat != null ? '✓ ' + esc(rec.tz) : ''}</span></label>
+    <label class="f">${t('name')}<input class="inp" id="s${P}Name" value="${esc(rec?.name || '')}" placeholder="${P==='A' ? t('you') : t('them')}" /></label>
+    <div class="row"><label class="f">${t('birthDate')}<input class="inp" id="s${P}Date" type="date" value="${rec?.date || ''}" /></label>
+    <label class="f">${t('birthTime')}<input class="inp" id="s${P}Time" type="time" value="${rec?.time || '12:00'}" ${rec?.noTime ? 'disabled' : ''} /></label></div>
+    <label class="check"><input type="checkbox" id="s${P}NoTime" ${rec?.noTime ? 'checked' : ''} /> ${t('noTimeShort')}</label>
+    <label class="f">${t('birthPlace')}<div class="city"><input class="inp" id="s${P}City" value="${esc(rec?.city || '')}" placeholder="${t('cityPhShort')}" autocomplete="off" /><div class="dropdown" id="s${P}CityDD"></div></div><span class="city-ok" id="s${P}CityOk">${rec?.lat != null ? '✓ ' + esc(rec.tz) : ''}</span></label>
   </div></div>`;
-  $('#synForms').innerHTML = form('A', me ? `${esc(me.name)} (kayıtlı haritan)` : 'Sen', me) + form('B', 'Partnerin', null);
+  $('#synForms').innerHTML = form('A', me ? t('yourSaved',{name:esc(me.name)}) : t('you'), me) + form('B', t('partner'), null);
   if (me) synLoc.A = {city: me.city, lat: me.lat, lon: me.lon, tz: me.tz};
   ['A','B'].forEach(P => {
     cityInput('s' + P, loc => { synLoc[P] = loc || {}; });
@@ -1111,10 +1144,10 @@ function renderSynForms(){
 }
 function readSyn(P){
   const L = synLoc[P] || {};
-  return {name: $(`#s${P}Name`).value.trim() || (P === 'A' ? 'Sen' : 'Partnerin'), date: $(`#s${P}Date`).value, time: $(`#s${P}Time`).value, noTime: $(`#s${P}NoTime`).checked,
+  return {name: $(`#s${P}Name`).value.trim() || (P === 'A' ? t('you') : t('partner')), date: $(`#s${P}Date`).value, time: $(`#s${P}Time`).value, noTime: $(`#s${P}NoTime`).checked,
     city: L.city, lat: L.lat ?? 41.0082, lon: L.lon ?? 28.9784, tz: L.tz || Intl.DateTimeFormat().resolvedOptions().timeZone || 'Europe/Istanbul', house:'whole', zodiac:'tropical'};
 }
-const SYN_TXT = {
+let SYN_TXT = {
   'Sun-Moon':['Birbirinizi sezgisel olarak anlarsınız; biriniz yön verirken diğeri yuva hissi verir. Klasik bir uyum göstergesi.','Biriniz ilerlemek isterken diğeri güvende hissetmek ister; ihtiyaçları konuşmak dengeyi kurar.'],
   'Venus-Mars':['Güçlü bir romantik ve fiziksel çekim; flört kendiliğinden akar.','Yoğun bir çekim ama farklı ritimler; tutku kıvılcımlarla gelir.'],
   'Moon-Moon':['Duygusal ritimleriniz uyumlu; aynı ortamda kendinizi evde hissedersiniz.','Duygusal ihtiyaçlarınız farklı yollardan ifade bulur; şefkat ve sabır köprü kurar.'],
@@ -1126,13 +1159,14 @@ const SYN_TXT = {
   'Mars-Mars':['Enerjiniz uyumlu; birlikte harekete geçmek ve hedef kovalamak kolay.','İkiniz de güçlü iradeye sahipsiniz; sürtüşmeyi ortak bir hedefe yönlendirmek önemli.'],
   'Moon-Mars':['Tutku ve duygu bir arada; birbirinizi canlandırırsınız.','Duygusal hassasiyet ile doğrudanlık çatışabilir; nazik bir dil şart.'],
 };
+if (LANG === 'en') SYN_TXT = EN.syn;
 function synText(a, b, asp){
   const key = [a.k, b.k].join('-'), rkey = [b.k, a.k].join('-');
-  const t = SYN_TXT[key] || SYN_TXT[rkey];
-  if (t) return asp.n === 'c' ? t[1] : asp.n === 'h' ? t[0] : t[0];
-  if (a.k === 'Saturn' || b.k === 'Saturn') return asp.n === 'c' ? 'Satürn sorumluluk ve sınırlar getirir; zorlayıcı ama olgunlaştırıcı bir bağ.' : 'Satürn bağlılık ve kalıcılık katar; ilişkiye güvenilir bir zemin sağlar.';
-  if (a.k === 'Jupiter' || b.k === 'Jupiter') return asp.n === 'c' ? 'Jüpiter abartı ve aşırı beklentiler getirebilir; yine de iyimserlik baskın.' : 'Jüpiter cömertlik, şans ve birlikte büyüme hissi katar.';
-  return `${a.short[0].toUpperCase()+a.short.slice(1)} ve ${b.short} arasında ${asp.tr.toLowerCase()}: ${asp.d}`;
+  const st = SYN_TXT[key] || SYN_TXT[rkey];
+  if (st) return asp.n === 'c' ? st[1] : st[0];
+  if (a.k === 'Saturn' || b.k === 'Saturn') return t('synSat')[asp.n === 'c' ? 1 : 0];
+  if (a.k === 'Jupiter' || b.k === 'Jupiter') return t('synJup')[asp.n === 'c' ? 1 : 0];
+  return cap(t('aspLine', {a: a.short, b: b.short, asp: asp.tr.toLocaleLowerCase(LOCALE), d: asp.d}));
 }
 function synastry(A, B){
   const main = ['Sun','Moon','Mercury','Venus','Mars','Jupiter','Saturn'];
@@ -1170,18 +1204,18 @@ function initSyn(){
   $('#sCalc').addEventListener('click', () => {
     renderSynForms();
     const A = readSyn('A'), B = readSyn('B');
-    if (!hasAstro()) return $('#sErr').textContent = 'Hesaplama kütüphanesi yüklenemedi.';
-    if (!A.date || !B.date) return $('#sErr').textContent = 'İki kişinin de doğum tarihini gir.';
+    if (!hasAstro()) return $('#sErr').textContent = t('errLibShort');
+    if (!A.date || !B.date) return $('#sErr').textContent = t('errBoth');
     $('#sErr').textContent = '';
     const cA = computeChart(A), cB = computeChart(B), r = synastry(cA, cB);
-    const catRow = (t, v, c) => `<div class="bar"><span>${t}</span><div class="track"><div class="fill" style="width:${v}%;background:${c}"></div></div><span>%${v}</span></div>`;
-    const headline = r.score >= 85 ? 'Yıldızlar sizden yana ✦' : r.score >= 70 ? 'Güçlü ve umut verici bir bağ' : r.score >= 55 ? 'Emekle parlayan bir ilişki' : 'Zorlayıcı ama öğretici bir eşleşme';
-    $('#synOut').innerHTML = `<div class="grid" style="gap:16px"><div class="card"><div class="score-wrap"><div class="score-ring">${ringSvg(r.score)}<div class="num"><div>%${r.score}<small>genel uyum</small></div></div></div>
+    const catRow = (t, v, c) => `<div class="bar"><span>${t}</span><div class="track"><div class="fill" style="width:${v}%;background:${c}"></div></div><span>${pct(v)}</span></div>`;
+    const headline = r.score >= 85 ? t('head1') : r.score >= 70 ? t('head2') : r.score >= 55 ? t('head3') : t('head4');
+    $('#synOut').innerHTML = `<div class="grid" style="gap:16px"><div class="card"><div class="score-wrap"><div class="score-ring">${ringSvg(r.score)}<div class="num"><div>${pct(r.score)}<small>${t('overall')}</small></div></div></div>
       <div style="width:100%"><div class="eyebrow">${esc(A.name)} ${g(SIGNS[cA.planets[0].sign].g)} & ${g(SIGNS[cB.planets[0].sign].g)} ${esc(B.name)}</div><h3 style="font-size:1.6rem;margin:6px 0 14px">${headline}</h3>
-      <div class="bars">${catRow('Aşk & çekim', r.cats.love, 'var(--rose)')}${catRow('İletişim', r.cats.comm, 'var(--sky)')}${catRow('Duygusal bağ', r.cats.emo, 'var(--lilac)')}${catRow('Uzun vade', r.cats.long, 'var(--gold)')}</div></div></div></div>
-      <div class="card"><h3 style="font-size:1.3rem;margin-bottom:6px">İlişkinizi tanımlayan açılar</h3>
-      ${r.list.length ? r.list.map(x => `<div class="asp"><div class="sym ${x.asp.n} glyph">${x.asp.sym}${VS}</div><div><b>${esc(A.name)}: ${x.a.tr} ${x.asp.tr.toLowerCase()} ${esc(B.name)}: ${x.b.tr}</b><p>${synText(x.a, x.b, x.asp)}</p></div></div>`).join('') : '<p class="muted">Belirgin bir açı bulunamadı.</p>'}
-      <p class="note" style="margin-top:12px">Sonuçlar eğlence amaçlıdır; her ilişki iletişim ve emekle şekillenir.</p></div></div>`;
+      <div class="bars">${catRow(t('cLove'), r.cats.love, 'var(--rose)')}${catRow(t('cComm'), r.cats.comm, 'var(--sky)')}${catRow(t('cEmo'), r.cats.emo, 'var(--lilac)')}${catRow(t('cLong'), r.cats.long, 'var(--gold)')}</div></div></div></div>
+      <div class="card"><h3 style="font-size:1.3rem;margin-bottom:6px">${t('synAspects')}</h3>
+      ${r.list.length ? r.list.map(x => `<div class="asp"><div class="sym ${x.asp.n} glyph">${x.asp.sym}${VS}</div><div><b>${esc(A.name)}: ${x.a.tr} ${x.asp.tr.toLocaleLowerCase(LOCALE)} ${esc(B.name)}: ${x.b.tr}</b><p>${synText(x.a, x.b, x.asp)}</p></div></div>`).join('') : `<p class="muted">${t('noSynAspects')}</p>`}
+      <p class="note" style="margin-top:12px">${t('synNote')}</p></div></div>`;
     $('#synOut').scrollIntoView({behavior:'smooth', block:'start'});
   });
 }
@@ -1191,17 +1225,17 @@ function initSyn(){
    ========================================================= */
 function renderSaved(){
   const list = store.get('asteria.charts', []);
-  if (!list.length){ $('#savedList').innerHTML = `<div class="empty-state" style="padding:24px"><div class="glyph">☆</div><p class="muted">Henüz kayıtlı haritan yok. Bir harita oluşturup “Haritamı kaydet”e dokun.</p><a class="btn primary" href="#harita">Harita oluştur</a></div>`; return; }
-  $('#savedList').innerHTML = list.map(c => `<div class="saved-item"><div class="glyph">${SIGNS[c.sun].g}${VS}</div><div class="grow"><b>${esc(c.name)} ${c.main ? '<span class="pill" style="color:var(--gold)">★ Ana profil</span>' : ''}</b><small>${fmtDate(new Date(c.date + 'T00:00'))} · ${esc(c.city || '')} · Güneş ${SIGNS[c.sun].tr} · Ay ${SIGNS[c.moon].tr}${c.asc != null ? ' · Yükselen ' + SIGNS[c.asc].tr : ''}</small></div>
-    <button class="btn small" data-open="${c.id}">Aç</button><button class="icon-btn" title="Ana profil yap" aria-label="Ana profil yap" data-main="${c.id}">★</button><button class="icon-btn" title="Sil" aria-label="Sil" data-del="${c.id}">✕</button></div>`).join('');
+  if (!list.length){ $('#savedList').innerHTML = `<div class="empty-state" style="padding:24px"><div class="glyph">☆</div><p class="muted">${t('noSaved')}</p><a class="btn primary" href="#harita">${t('createChart')}</a></div>`; return; }
+  $('#savedList').innerHTML = list.map(c => `<div class="saved-item"><div class="glyph">${SIGNS[c.sun].g}${VS}</div><div class="grow"><b>${esc(c.name)} ${c.main ? `<span class="pill" style="color:var(--gold)">${t('mainProfile')}</span>` : ''}</b><small>${fmtDate(new Date(c.date + 'T00:00'))} · ${esc(c.city || '')} · ${t('sun')} ${SIGNS[c.sun].tr} · ${t('moon')} ${SIGNS[c.moon].tr}${c.asc != null ? ' · ' + t('rising') + ' ' + SIGNS[c.asc].tr : ''}</small></div>
+    <button class="btn small" data-open="${c.id}">${t('open')}</button><button class="icon-btn" title="${t('setMain')}" aria-label="${t('setMain')}" data-main="${c.id}">★</button><button class="icon-btn" title="${t('del')}" aria-label="${t('del')}" data-del="${c.id}">✕</button></div>`).join('');
 }
 function initSaved(){
   $('#savedList').addEventListener('click', e => {
     const list = store.get('asteria.charts', []);
     const t = e.target.closest('button'); if (!t) return;
     if (t.dataset.open){ const rec = list.find(c => c.id === t.dataset.open); location.hash = '#harita'; setTimeout(() => { loadIntoForm(rec); $('#natalForm').requestSubmit(); }, 30); }
-    if (t.dataset.main){ list.forEach(c => c.main = c.id === t.dataset.main); store.set('asteria.charts', list); renderSaved(); renderHome(); toast('Ana profil güncellendi'); }
-    if (t.dataset.del){ if (!confirm('Bu harita silinsin mi?')) return; const nl = list.filter(c => c.id !== t.dataset.del); if (nl.length && !nl.some(c => c.main)) nl[0].main = true; store.set('asteria.charts', nl); renderSaved(); renderHome(); }
+    if (t.dataset.main){ list.forEach(c => c.main = c.id === t.dataset.main); store.set('asteria.charts', list); renderSaved(); renderHome(); toast(t('mainUpdated')); }
+    if (t.dataset.del){ if (!confirm(t('confirmDel'))) return; const nl = list.filter(c => c.id !== t.dataset.del); if (nl.length && !nl.some(c => c.main)) nl[0].main = true; store.set('asteria.charts', nl); renderSaved(); renderHome(); }
   });
 }
 
@@ -1221,7 +1255,9 @@ function stars(){
    BAŞLAT
    ========================================================= */
 function init(){
+  applyStatic();
   $('#yr').textContent = new Date().getFullYear();
+  $('#langBtn').onclick = () => setLang(LANG === 'tr' ? 'en' : 'tr');
   // Eski sürümün düz metin şifresini temizle
   try { const u = JSON.parse(localStorage.getItem('asteria-user') || 'null'); if (u && u.password){ delete u.password; localStorage.setItem('asteria-user', JSON.stringify(u)); } } catch {}
   const theme = store.get('asteria.theme', matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');

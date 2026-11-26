@@ -1,0 +1,8 @@
+{
+  "appId": "com.dogankku.astrolos",
+  "appName": "Astrolos",
+  "webDir": "www",
+  "android": {
+    "backgroundColor": "#0c0a24"
+  }
+}
